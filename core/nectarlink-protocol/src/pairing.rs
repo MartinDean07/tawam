@@ -32,9 +32,9 @@ pub struct PairingUri {
 
 #[derive(Debug, thiserror::Error, PartialEq, Eq)]
 pub enum PairingUriError {
-    #[error("not a NectarLink pairing link")]
+    #[error("not a Tawam pairing link")]
     NotPairing,
-    #[error("pairing link version {0} is not supported; please update NectarLink")]
+    #[error("pairing link version {0} is not supported; please update Tawam")]
     UnsupportedVersion(String),
     #[error("pairing link is missing {0}")]
     Missing(&'static str),
@@ -43,9 +43,9 @@ pub enum PairingUriError {
 }
 
 impl PairingUri {
-    /// `nectarlink://pair?v=0&id=…&s=…&n=…[&a=ip:port,…]`
+    /// `tawam://pair?v=0&id=…&s=…&n=…[&a=ip:port,…]`
     pub fn to_uri(&self) -> String {
-        let mut url = Url::parse("nectarlink://pair").expect("static URL");
+        let mut url = Url::parse("tawam://pair").expect("static URL");
         {
             let mut q = url.query_pairs_mut();
             q.append_pair("v", "0");
@@ -62,7 +62,7 @@ impl PairingUri {
 
     pub fn parse(uri: &str) -> Result<Self, PairingUriError> {
         let url = Url::parse(uri.trim()).map_err(|_| PairingUriError::NotPairing)?;
-        if url.scheme() != "nectarlink" || url.host_str() != Some("pair") {
+        if url.scheme() != "tawam" || url.host_str() != Some("pair") {
             return Err(PairingUriError::NotPairing);
         }
         let get = |key: &str| url.query_pairs().find(|(k, _)| k == key).map(|(_, v)| v.into_owned());
@@ -163,7 +163,7 @@ mod tests {
             addrs: vec!["192.168.1.20:41641".parse().unwrap(), "[fe80::1]:41641".parse().unwrap()],
         };
         let text = uri.to_uri();
-        assert!(text.starts_with("nectarlink://pair?v=0&id="));
+        assert!(text.starts_with("tawam://pair?v=0&id="));
         assert_eq!(PairingUri::parse(&text).unwrap(), uri);
     }
 
@@ -177,11 +177,11 @@ mod tests {
     fn uri_errors() {
         assert_eq!(PairingUri::parse("https://example.com"), Err(PairingUriError::NotPairing));
         assert_eq!(
-            PairingUri::parse("nectarlink://pair?v=9&id=x&s=y"),
+            PairingUri::parse("tawam://pair?v=9&id=x&s=y"),
             Err(PairingUriError::UnsupportedVersion("9".into()))
         );
         assert_eq!(
-            PairingUri::parse("nectarlink://pair?v=0&s=AAAA"),
+            PairingUri::parse("tawam://pair?v=0&s=AAAA"),
             Err(PairingUriError::Missing("device ID"))
         );
         let good =

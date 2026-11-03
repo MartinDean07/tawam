@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-//! Starting NectarLink when the user signs in, so phones can reach this PC
+//! Starting Tawam when the user signs in, so phones can reach this PC
 //! without opening it first: a value under the user's `Run` key that starts
 //! it in the tray.
 
@@ -17,7 +17,7 @@ use windows::{
 };
 
 const RUN_KEY: &str = r"Software\Microsoft\Windows\CurrentVersion\Run";
-const VALUE: &str = "Nectarlink";
+const VALUE: &str = "Tawam";
 
 /// The command the `Run` value holds.
 pub fn command(exe: &Path) -> String {
@@ -61,7 +61,7 @@ pub fn set(enabled: bool, exe: &Path) -> windows::core::Result<()> {
 pub fn is_installed(exe: &Path) -> bool {
     let installed_to = super::reg_string(
         windows::Win32::System::Registry::HKEY_LOCAL_MACHINE,
-        r"Software\Nectarlink",
+        r"Software\Tawam",
         "InstallDir",
     );
     is_installed_in(exe, installed_to.as_deref())
@@ -84,26 +84,26 @@ mod tests {
     #[test]
     fn starts_minimized_from_the_exe() {
         assert_eq!(
-            command(Path::new(r"C:\Program Files\Nectarlink\nectarlink-desktop.exe")),
-            r#""C:\Program Files\Nectarlink\nectarlink-desktop.exe" --minimized"#
+            command(Path::new(r"C:\Program Files\Tawam\tawam-desktop.exe")),
+            r#""C:\Program Files\Tawam\tawam-desktop.exe" --minimized"#
         );
     }
 
     #[test]
     fn builds_are_not_installed_copies() {
         assert!(!is_installed(Path::new(
-            r"C:\Users\me\src\nectarlink\target\release\nectarlink-desktop.exe"
+            r"C:\Users\me\src\tawam\target\release\tawam-desktop.exe"
         )));
         if let Ok(dir) = std::env::var("ProgramFiles") {
-            assert!(is_installed(&Path::new(&dir).join("Nectarlink").join("nectarlink-desktop.exe")));
+            assert!(is_installed(&Path::new(&dir).join("Tawam").join("tawam-desktop.exe")));
         }
     }
 
     #[test]
     fn a_copy_in_the_folder_setup_chose_is_installed() {
-        let exe = Path::new(r"D:\Apps\Nectarlink\nectarlink-desktop.exe");
-        assert!(is_installed_in(exe, Some(r"d:\apps\nectarlink")));
-        assert!(is_installed_in(exe, Some(r"D:\Apps\Nectarlink\")));
+        let exe = Path::new(r"D:\Apps\Tawam\tawam-desktop.exe");
+        assert!(is_installed_in(exe, Some(r"d:\apps\tawam")));
+        assert!(is_installed_in(exe, Some(r"D:\Apps\Tawam\")));
         assert!(!is_installed_in(exe, Some(r"D:\Apps\Nectar")));
         assert!(!is_installed_in(exe, Some("")));
         assert!(!is_installed_in(exe, None));

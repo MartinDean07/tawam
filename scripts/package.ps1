@@ -98,13 +98,13 @@ if (-not $SkipBuild) {
     if ($isArm64) {
         $env:QMAKE = Join-Path $arm64ToolDir "qmake6.exe"
         if (-not (Test-Path $env:QMAKE)) { $env:QMAKE = Join-Path $arm64ToolDir "qmake.exe" }
-        Invoke-Native "the build" { cargo build --locked --release --target aarch64-pc-windows-msvc -p nectarlink-desktop -p nectarlink-vcam }
+        Invoke-Native "the build" { cargo build --locked --release --target aarch64-pc-windows-msvc -p tawam-desktop -p nectarlink-vcam }
     } else {
         $env:PATH = "$(Join-Path $targetKit 'bin');$env:PATH"
-        Invoke-Native "the build" { cargo build --locked --release -p nectarlink-desktop -p nectarlink-vcam }
+        Invoke-Native "the build" { cargo build --locked --release -p tawam-desktop -p nectarlink-vcam }
     }
 }
-$exe = Join-Path $targetDir 'nectarlink-desktop.exe'
+$exe = Join-Path $targetDir 'tawam-desktop.exe'
 if (-not (Test-Path $exe)) { throw "no release build at $exe" }
 $vcamDll = Join-Path $targetDir 'nectarlink_vcam.dll'
 if (-not (Test-Path $vcamDll)) { throw "no release build at $vcamDll" }
@@ -149,7 +149,7 @@ Invoke-Native "windeployqt" {
         }
         $env:PATH = "$arm64ToolDir;$(Join-Path $hostKit 'bin');$env:PATH"
     }
-    & $windeployqt @deployArgs (Join-Path $stage 'nectarlink-desktop.exe')
+    & $windeployqt @deployArgs (Join-Path $stage 'tawam-desktop.exe')
 }
 
 # Translations. windeployqt stages Qt's own .qm files (in translations/, so its
@@ -251,7 +251,7 @@ if ($makeappx) {
         New-Item -ItemType Directory -Force (Join-Path $check 'content') | Out-Null
         Copy-Item (Join-Path $stage 'AppxManifest.xml'), $assetsDir -Destination (Join-Path $check 'content') -Recurse
         # The app is outside the package (its install folder); any file stands in for it.
-        Set-Content (Join-Path $check 'content\nectarlink-desktop.exe') 'app'
+        Set-Content (Join-Path $check 'content\tawam-desktop.exe') 'app'
         Invoke-Native "the package manifest check" {
             & $makeappx.FullName pack /o /d (Join-Path $check 'content') /p (Join-Path $check 'check.msix')
         }

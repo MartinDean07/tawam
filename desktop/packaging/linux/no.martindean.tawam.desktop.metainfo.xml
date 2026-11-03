@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>org.nectarlink.desktop</id>
-  <name>NectarLink</name>
+  <id>no.martindean.tawam.desktop</id>
+  <name>Tawam</name>
   <summary>Connect your Android phone and Linux PC over LAN</summary>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
-  <developer id="io.github.thtbee">
-    <name>thtbee</name>
+  <developer id="io.github.martindean07">
+    <name>Martin Dean</name>
   </developer>
   <description>
     <p>
-      NectarLink links your Android phone and Linux desktop over your local network with end-to-end encryption.
+      Tawam links your Android phone and Linux desktop over your local network with end-to-end encryption.
     </p>
     <ul>
       <li>Sync clipboard text and images bidirectionally</li>
@@ -20,12 +20,12 @@
       <li>Read and send SMS/MMS messages and manage phone calls</li>
     </ul>
   </description>
-  <launchable type="desktop-id">nectarlink.desktop</launchable>
-  <url type="homepage">https://github.com/thtbee/nectarlink</url>
-  <url type="bugtracker">https://github.com/thtbee/nectarlink/issues</url>
+  <launchable type="desktop-id">tawam.desktop</launchable>
+  <url type="homepage">https://github.com/MartinDean07/tawam</url>
+  <url type="bugtracker">https://github.com/MartinDean07/tawam/issues</url>
   <provides>
-    <binary>nectarlink-desktop</binary>
-    <mediatype>x-scheme-handler/nectarlink</mediatype>
+    <binary>tawam-desktop</binary>
+    <mediatype>x-scheme-handler/tawam</mediatype>
     <mediatype>x-scheme-handler/tel</mediatype>
     <mediatype>x-scheme-handler/sms</mediatype>
     <mediatype>x-scheme-handler/smsto</mediatype>
@@ -34,6 +34,6 @@
   </provides>
   <content_rating type="oars-1.1" />
   <releases>
-    <release version="0.1.4" date="2026-10-17" />
+    <release version="0.1.4" date="2026-11-03" />
   </releases>
 </component>

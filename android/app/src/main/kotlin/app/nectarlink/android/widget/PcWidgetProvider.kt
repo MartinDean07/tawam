@@ -103,12 +103,12 @@ class PcWidgetProvider : AppWidgetProvider() {
     }
 
     companion object {
-        const val ACTION_RING_PC = "app.nectarlink.widget.ACTION_RING_PC"
-        const val ACTION_LOCK_PC = "app.nectarlink.widget.ACTION_LOCK_PC"
-        const val ACTION_WAKE_PC = "app.nectarlink.widget.ACTION_WAKE_PC"
-        const val ACTION_MEDIA_PLAY_PAUSE = "app.nectarlink.widget.ACTION_MEDIA_PLAY_PAUSE"
-        const val ACTION_MEDIA_NEXT = "app.nectarlink.widget.ACTION_MEDIA_NEXT"
-        const val EXTRA_PC_ID = "app.nectarlink.widget.EXTRA_PC_ID"
+        const val ACTION_RING_PC = "no.martindean.tawam.widget.ACTION_RING_PC"
+        const val ACTION_LOCK_PC = "no.martindean.tawam.widget.ACTION_LOCK_PC"
+        const val ACTION_WAKE_PC = "no.martindean.tawam.widget.ACTION_WAKE_PC"
+        const val ACTION_MEDIA_PLAY_PAUSE = "no.martindean.tawam.widget.ACTION_MEDIA_PLAY_PAUSE"
+        const val ACTION_MEDIA_NEXT = "no.martindean.tawam.widget.ACTION_MEDIA_NEXT"
+        const val EXTRA_PC_ID = "no.martindean.tawam.widget.EXTRA_PC_ID"
 
         private const val REQ_OPEN_APP = 100
         private const val REQ_SEND_CLIP = 101

@@ -2478,7 +2478,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "nectarlink-desktop"
+name = "tawam-desktop"
 version = "0.1.4"
 dependencies = [
  "anyhow",

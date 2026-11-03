@@ -18,7 +18,7 @@ This document covers the pinned toolchain versions, environment variables, build
 
 ## Environment Variables
 
-When building the Windows desktop client (`nectarlink-desktop`) or running workspace-wide `cargo` commands that compile `desktop/app`, ensure Qt's `bin` folder is on `PATH` or point `QMAKE` to its `qmake.exe`:
+When building the Windows desktop client (`tawam-desktop`) or running workspace-wide `cargo` commands that compile `desktop/app`, ensure Qt's `bin` folder is on `PATH` or point `QMAKE` to its `qmake.exe`:
 
 ```powershell
 $env:QMAKE = "C:\Qt\6.12.0\msvc2022_64\bin\qmake.exe"
@@ -49,17 +49,17 @@ To run the headless CLI (`cli/`):
 cargo run -p nectarlink-cli -- --help
 ```
 
-### 2. Windows Desktop Application (`nectarlink-desktop`)
+### 2. Windows Desktop Application (`tawam-desktop`)
 
 ```powershell
 # Debug build
-cargo build -p nectarlink-desktop
+cargo build -p tawam-desktop
 
 # Release build (LTO = thin, codegen-units = 1, opt-level = 3)
-cargo build --release -p nectarlink-desktop
+cargo build --release -p tawam-desktop
 ```
 
-The compiled executable is placed at `target/release/nectarlink-desktop.exe`.
+The compiled executable is placed at `target/release/tawam-desktop.exe`.
 
 ### 3. Windows Virtual Camera DLL (`nectarlink-vcam`)
 
@@ -70,7 +70,7 @@ cargo build --release -p nectarlink-vcam
 Produces `target/release/nectarlink_vcam.dll`. The DLL exports only `DllGetClassObject` and `DllCanUnloadNow`; it does not export `DllRegisterServer`, so `regsvr32` cannot register it. The desktop app writes the COM and Frame Server registry keys instead. Build the desktop app (section 2), then run in an elevated PowerShell prompt:
 
 ```powershell
-target\release\nectarlink-desktop.exe --register-vcam
+target\release\tawam-desktop.exe --register-vcam
 ```
 
 `--unregister-vcam` removes the registration again.
@@ -83,7 +83,7 @@ target\release\nectarlink-desktop.exe --register-vcam
 > keeps the DLL in its install folder (under `C:\Program Files\Nectarlink` by
 > default); to test a local DLL, stop the `FrameServer` service
 > (`Stop-Service FrameServer`), copy it over the installed DLL, and run the
-> installed `nectarlink-desktop.exe --register-vcam` elevated.
+> installed `tawam-desktop.exe --register-vcam` elevated.
 
 ### 4. Design Tokens and Third-Party Notices (`cargo xtask`)
 
@@ -168,7 +168,7 @@ cargo test -p nectarlink-core --release --test scale_tests -- --ignored
 cargo test -p nectarlink-ffi
 
 # Desktop notification store, localhost HTTP API auth/CORS guards, and vcam shared memory tests
-cargo test -p nectarlink-desktop -p nectarlink-vcam
+cargo test -p tawam-desktop -p nectarlink-vcam
 ```
 
 ### Android Lint and Unit Tests

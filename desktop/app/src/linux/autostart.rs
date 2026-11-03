@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-//! XDG autostart management (`~/.config/autostart/nectarlink.desktop`) on Linux.
+//! XDG autostart management (`~/.config/autostart/tawam.desktop`) on Linux.
 
 use std::{
     fs, io,
     path::{Path, PathBuf},
 };
 
-const DESKTOP_FILE_NAME: &str = "nectarlink.desktop";
+const DESKTOP_FILE_NAME: &str = "tawam.desktop";
 
 /// Escapes a single argument for placement inside double quotes (`"..."`) on a
 /// FreeDesktop `.desktop` `Exec=` line (`\`, `"`, `` ` ``, `$`, and literal `%`).
@@ -62,10 +62,10 @@ fn render_desktop_entry(exe: &Path) -> String {
     format!(
         "[Desktop Entry]\n\
          Type=Application\n\
-         Name=NectarLink\n\
+         Name=Tawam\n\
          Comment=Link your Android phone and PC\n\
          Exec={cmd}\n\
-         Icon=nectarlink\n\
+         Icon=tawam\n\
          Terminal=false\n\
          Categories=Utility;Network;\n\
          StartupNotify=false\n\
@@ -158,14 +158,14 @@ mod tests {
     #[test]
     fn writes_and_removes_xdg_autostart_desktop_file() {
         let dir = tempfile::tempdir().unwrap();
-        let exe = Path::new("/usr/bin/nectarlink-desktop");
+        let exe = Path::new("/usr/bin/tawam-desktop");
 
         assert!(!is_enabled_in(dir.path()));
         set_in(dir.path(), true, exe).unwrap();
         assert!(is_enabled_in(dir.path()));
 
         let desktop = fs::read_to_string(autostart_file_path_in(dir.path())).unwrap();
-        assert!(desktop.contains("Exec=\"/usr/bin/nectarlink-desktop\" --minimized"));
+        assert!(desktop.contains("Exec=\"/usr/bin/tawam-desktop\" --minimized"));
 
         set_in(dir.path(), false, exe).unwrap();
         assert!(!is_enabled_in(dir.path()));
@@ -175,26 +175,26 @@ mod tests {
 
     #[test]
     fn detects_installed_vs_build_paths() {
-        assert!(is_installed(Path::new("/usr/bin/nectarlink-desktop")));
-        assert!(is_installed(Path::new("/usr/local/bin/nectarlink-desktop")));
-        assert!(is_installed(Path::new("/opt/nectarlink/nectarlink-desktop")));
+        assert!(is_installed(Path::new("/usr/bin/tawam-desktop")));
+        assert!(is_installed(Path::new("/usr/local/bin/tawam-desktop")));
+        assert!(is_installed(Path::new("/opt/tawam/tawam-desktop")));
         assert!(is_installed_location(Path::new(
-            "/home/user/.local/share/nectarlink-app/nectarlink-desktop"
+            "/home/user/.local/share/nectarlink-app/tawam-desktop"
         )));
-        assert!(is_installed_location(Path::new("/home/user/.local/bin/nectarlink-desktop")));
-        assert!(!is_installed(Path::new("/home/user/repo/target/debug/nectarlink-desktop")));
-        assert!(!is_installed(Path::new("/home/user/repo/target/release/nectarlink-desktop")));
+        assert!(is_installed_location(Path::new("/home/user/.local/bin/tawam-desktop")));
+        assert!(!is_installed(Path::new("/home/user/repo/target/debug/tawam-desktop")));
+        assert!(!is_installed(Path::new("/home/user/repo/target/release/tawam-desktop")));
     }
 
     #[test]
     fn launchers_run_the_appimage_not_its_mount() {
         let dir = tempfile::tempdir().unwrap();
-        let appimage = dir.path().join("Nectarlink-0.1.5-x86_64.AppImage");
+        let appimage = dir.path().join("Tawam-0.1.5-x86_64.AppImage");
         fs::write(&appimage, b"").unwrap();
-        let mounted = Path::new("/tmp/.mount_NectarAbc123/usr/bin/nectarlink-desktop");
+        let mounted = Path::new("/tmp/.mount_NectarAbc123/usr/bin/tawam-desktop");
         assert_eq!(launcher_from(mounted, Some(appimage.clone())), appimage);
         // Not from an AppImage, or one that isn't there: the program itself.
-        let exe = Path::new("/usr/lib/nectarlink/nectarlink-desktop");
+        let exe = Path::new("/usr/lib/tawam/tawam-desktop");
         assert_eq!(launcher_from(exe, None), exe);
         assert_eq!(launcher_from(exe, Some(dir.path().join("gone.AppImage"))), exe);
         assert_eq!(launcher_from(exe, Some(PathBuf::from("relative.AppImage"))), exe);
@@ -202,10 +202,10 @@ mod tests {
 
     #[test]
     fn command_escapes_desktop_entry_special_characters() {
-        let exe = Path::new("/opt/my \"quoted\" $dir`1`\\bin%20/nectarlink-desktop");
+        let exe = Path::new("/opt/my \"quoted\" $dir`1`\\bin%20/tawam-desktop");
         assert_eq!(
             command(exe),
-            r#""/opt/my \"quoted\" \$dir\`1\`\\bin%%20/nectarlink-desktop" --minimized"#
+            r#""/opt/my \"quoted\" \$dir\`1\`\\bin%%20/tawam-desktop" --minimized"#
         );
     }
 }

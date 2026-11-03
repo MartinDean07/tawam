@@ -4,7 +4,7 @@
 set -euo pipefail
 
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
-stage="$(mktemp -d -t nectarlink-ffmpeg-XXXXXX)"
+stage="$(mktemp -d -t tawam-ffmpeg-XXXXXX)"
 trap 'rm -rf "${stage}"' EXIT
 out="${FFMPEG_BACKEND_DIR:-${root}/target/release}"
 mkdir -p "${out}"

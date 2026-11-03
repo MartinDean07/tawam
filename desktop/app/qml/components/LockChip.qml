@@ -43,21 +43,21 @@ Rectangle {
         const s = feature || {}
         switch (lockKind) {
         case "assist":
-            return qsTr("On your phone, open NectarLink › Settings › Control from your PC and turn on the Accessibility service.")
+            return qsTr("On your phone, open Tawam › Settings › Control from your PC and turn on the Accessibility service.")
         case "elevated":
-            return qsTr("Needs Elevated: set up Wireless debugging in NectarLink › Settings › Control from your PC, or connect the phone over USB with USB debugging allowed.")
+            return qsTr("Needs Elevated: set up Wireless debugging in Tawam › Settings › Control from your PC, or connect the phone over USB with USB debugging allowed.")
         case "role":
-            return qsTr("On your phone, set NectarLink as the default SMS/Caller ID app when prompted.")
+            return qsTr("On your phone, set Tawam as the default SMS/Caller ID app when prompted.")
         case "permission":
             if (s.target === "notification_access")
-                return qsTr("On your phone, open NectarLink and allow Notification access.")
+                return qsTr("On your phone, open Tawam and allow Notification access.")
             if (s.target === "dnd_access")
-                return qsTr("On your phone, open NectarLink and allow Do Not Disturb access.")
+                return qsTr("On your phone, open Tawam and allow Do Not Disturb access.")
             if (s.target === "write_settings")
-                return qsTr("On your phone, open NectarLink and allow Modify system settings.")
-            return qsTr("Open NectarLink on your phone and grant this permission in Settings.")
+                return qsTr("On your phone, open Tawam and allow Modify system settings.")
+            return qsTr("Open Tawam on your phone and grant this permission in Settings.")
         case "enableAddon":
-            return qsTr("Open Settings › Camera & Audio to set up the NectarLink virtual camera add-on.")
+            return qsTr("Open Settings › Camera & Audio to set up the Tawam virtual camera add-on.")
         case "enablePath":
             return qsTr("Open Settings › Connection & About and turn on Connect over mobile data.")
         case "enableToggle":

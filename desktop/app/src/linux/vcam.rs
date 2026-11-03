@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 //! Linux Virtual Camera (`v4l2loopback`) discovery, registration, and
-//! shared-memory-to-V4L2 YUYV frame output for `"NectarLink Webcam"`.
+//! shared-memory-to-V4L2 YUYV frame output for `"Tawam Webcam"`.
 
 use std::{
     fs::{self, OpenOptions},
@@ -19,7 +19,7 @@ use std::{
 use nectarlink_vcam::{DEFAULT_MAPPING_NAME, LOCAL_MAPPING_NAME, SharedFrameMapping};
 
 pub const CLSID_STR: &str = "{8E6C3B74-5D4A-4B9E-9A12-7C8F1E2D3A40}";
-pub const FRIENDLY_NAME: &str = "NectarLink Webcam";
+pub const FRIENDLY_NAME: &str = "Tawam Webcam";
 pub const REGISTER_ARG: &str = "--register-vcam";
 pub const UNREGISTER_ARG: &str = "--unregister-vcam";
 
@@ -82,7 +82,7 @@ pub fn find_v4l2loopback_in_sysfs(sysfs_root: &Path, dev_root: &Path) -> Option<
                 continue;
             };
             let lower = card_name.to_ascii_lowercase();
-            if lower.contains("nectarlink") {
+            if lower.contains("tawam") {
                 candidates.push((0, dev_name, dev_node));
             } else if lower.contains("dummy video device") || lower.contains("v4l2loopback") {
                 candidates.push((1, dev_name, dev_node));
@@ -210,7 +210,7 @@ fn write_config_nofollow(path: &Path, content: &[u8]) {
     }
 }
 
-/// Loads `v4l2loopback` with `"NectarLink Webcam"` and writes persistent module config files.
+/// Loads `v4l2loopback` with `"Tawam Webcam"` and writes persistent module config files.
 pub fn register_hklm() -> Result<(), String> {
     write_config_nofollow(Path::new(MODULES_LOAD_CONF), b"v4l2loopback\n");
     write_config_nofollow(
@@ -228,7 +228,7 @@ pub fn unregister_hklm() -> Result<(), String> {
     run_modprobe(&["-r", "v4l2loopback"])
 }
 
-/// Launches `nectarlink-desktop <arg>` under `pkexec` and invokes `on_done` when it exits.
+/// Launches `tawam-desktop <arg>` under `pkexec` and invokes `on_done` when it exits.
 pub fn run_elevated(arg: &'static str, on_done: impl FnOnce(bool) + Send + 'static) {
     thread::spawn(move || {
         let Ok(exe) = std::env::current_exe() else {
@@ -451,7 +451,7 @@ mod tests {
         fs::create_dir_all(&dev).unwrap();
 
         fs::write(v0.join("name"), "Integrated Camera: USB\n").unwrap();
-        fs::write(v1.join("name"), "NectarLink Webcam\n").unwrap();
+        fs::write(v1.join("name"), "Tawam Webcam\n").unwrap();
         fs::write(dev.join("video0"), b"").unwrap();
         fs::write(dev.join("video1"), b"").unwrap();
 

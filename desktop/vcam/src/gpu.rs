@@ -28,8 +28,8 @@ use windows::{
     core::{HSTRING, Interface},
 };
 
-const GLOBAL: &str = "Global\\NectarlinkVcamGpu_v1";
-const LOCAL: &str = "Local\\NectarlinkVcamGpu_v1";
+const GLOBAL: &str = "Global\\TawamVcamGpu_v1";
+const LOCAL: &str = "Local\\TawamVcamGpu_v1";
 const ACCESS: u32 = DXGI_SHARED_RESOURCE_READ.0 | DXGI_SHARED_RESOURCE_WRITE.0;
 static NEXT_EPOCH: AtomicU64 = AtomicU64::new(0);
 #[path = "gpu_scale.rs"]
@@ -95,7 +95,7 @@ impl Descriptor {
             .then_some(d)
     }
     fn name(self) -> HSTRING {
-        HSTRING::from(format!("Global\\NectarlinkVcamGpu_{}_{}_{}", self.pid, self.epoch, self.slot))
+        HSTRING::from(format!("Global\\TawamVcamGpu_{}_{}_{}", self.pid, self.epoch, self.slot))
     }
 }
 
@@ -871,7 +871,7 @@ mod tests {
 
     fn pair() -> (GpuPublisher, GpuReader) {
         let name = format!(
-            "Local\\NectarlinkGpuTest_{}_{}",
+            "Local\\TawamGpuTest_{}_{}",
             std::process::id(),
             TEST_ID.fetch_add(1, Ordering::Relaxed)
         );
@@ -1085,7 +1085,7 @@ mod tests {
     #[test]
     #[ignore = "requires D3D11 cross-process texture sharing"]
     fn separate_process_opens_and_verifies_shared_gpu_frames() {
-        let name = format!("Local\\NectarlinkGpuCrossProcess_{}", std::process::id());
+        let name = format!("Local\\TawamGpuCrossProcess_{}", std::process::id());
         let mut reader = reader_with_mapping(&name);
         let mut child = std::process::Command::new(std::env::current_exe().unwrap())
             .creation_flags(0x08000000)

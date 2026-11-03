@@ -537,6 +537,6 @@ mod tests {
     fn free_space_queries_existing_directory() {
         let temp = std::env::temp_dir();
         assert!(free_space(&temp).is_some());
-        assert!(free_space(std::path::Path::new("/nonexistent/nectarlink/path/xyz")).is_none());
+        assert!(free_space(std::path::Path::new("/nonexistent/tawam/path/xyz")).is_none());
     }
 }

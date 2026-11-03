@@ -8,14 +8,14 @@
   IgnorableNamespaces="uap uap10 desktop rescap">
 
   <Identity
-    Name="Nectarlink.Desktop"
-    Publisher="CN=The Nectarlink contributors"
+    Name="Tawam.Desktop"
+    Publisher="CN=The Tawam contributors"
     Version="0.0.1.0"
     ProcessorArchitecture="x64" />
 
   <Properties>
-    <DisplayName>Nectarlink</DisplayName>
-    <PublisherDisplayName>The Nectarlink contributors</PublisherDisplayName>
+    <DisplayName>Tawam</DisplayName>
+    <PublisherDisplayName>The Tawam contributors</PublisherDisplayName>
     <Logo>Assets\Square150x150Logo.png</Logo>
     <uap10:AllowExternalContent>true</uap10:AllowExternalContent>
   </Properties>
@@ -30,19 +30,19 @@
 
   <Applications>
     <Application
-      Id="Nectarlink"
-      Executable="nectarlink-desktop.exe"
+      Id="Tawam"
+      Executable="tawam-desktop.exe"
       uap10:TrustLevel="mediumIL"
       uap10:RuntimeBehavior="win32App">
       <uap:VisualElements
-        DisplayName="Nectarlink"
+        DisplayName="Tawam"
         Description="Your phone, on your PC"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
         BackgroundColor="transparent" />
       <Extensions>
         <uap:Extension Category="windows.shareTarget">
-          <uap:ShareTarget Description="Send to your phone with Nectarlink">
+          <uap:ShareTarget Description="Send to your phone with Tawam">
             <uap:SupportedFileTypes>
               <uap:SupportsAnyFileType />
             </uap:SupportedFileTypes>

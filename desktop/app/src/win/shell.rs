@@ -223,7 +223,7 @@ mod tests {
     #[test]
     fn url_scheme_registration_distinguishes_registered_and_unregistered_schemes() {
         assert!(is_url_scheme_registered("http"));
-        assert!(!is_url_scheme_registered("nectarlink-nonexistent-scheme"));
+        assert!(!is_url_scheme_registered("tawam-nonexistent-scheme"));
         assert!(!is_url_scheme_registered(""));
     }
 }

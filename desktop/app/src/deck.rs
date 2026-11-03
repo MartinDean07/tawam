@@ -48,8 +48,8 @@ fn sample_live_state() -> DeckState {
     let mut output_devices = win::audio::output_devices();
     if crate::pc_audio_stream::is_enabled() {
         output_devices.push(nectarlink_core::AudioOutputDevice {
-            id: "nectarlink:phone_speaker".to_owned(),
-            name: "Phone speaker (NectarLink)".to_owned(),
+            id: "tawam:phone_speaker".to_owned(),
+            name: "Phone speaker (Tawam)".to_owned(),
             is_default: false,
         });
     }

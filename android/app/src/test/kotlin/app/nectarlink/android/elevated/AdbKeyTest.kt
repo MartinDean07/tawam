@@ -16,10 +16,10 @@ class AdbKeyTest {
     @Test
     fun theCertificateIsValidAndSelfSigned() {
         val pair = KeyPairGenerator.getInstance("RSA").apply { initialize(2048) }.generateKeyPair()
-        val der = AdbKey.selfSignedCertificate(pair, "CN=Nectarlink")
+        val der = AdbKey.selfSignedCertificate(pair, "CN=Tawam")
         val cert = CertificateFactory.getInstance("X.509").generateCertificate(der.inputStream()) as X509Certificate
         assertEquals(3, cert.version)
-        assertEquals("CN=Nectarlink", cert.subjectX500Principal.name)
+        assertEquals("CN=Tawam", cert.subjectX500Principal.name)
         assertEquals(cert.subjectX500Principal, cert.issuerX500Principal)
         assertArrayEquals(pair.public.encoded, cert.publicKey.encoded)
         cert.checkValidity()

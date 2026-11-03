@@ -202,7 +202,7 @@ fn by_title(windows: Vec<Window>, title: &str) -> Option<Window> {
     }
     let mut matching = windows
         .into_iter()
-        .filter(|w| w.program != "nectarlink-desktop.exe" && w.title.to_lowercase().contains(&wanted));
+        .filter(|w| w.program != "tawam-desktop.exe" && w.title.to_lowercase().contains(&wanted));
     let found = matching.next()?;
     // Two windows with that title: can't tell which one plays.
     matching.next().is_none().then_some(found)

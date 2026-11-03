@@ -813,7 +813,7 @@ mod tests {
                 if !decoder.on_gpu() {
                     continue;
                 }
-                let name = format!("Local\\NectarlinkDecoderPoolTest_{}_{}", std::process::id(), codec);
+                let name = format!("Local\\TawamDecoderPoolTest_{}_{}", std::process::id(), codec);
                 let mut reader = GpuReader::new_with_mapping(&name).unwrap();
                 let mut publisher = GpuPublisher::new_with_mapping(&name).unwrap();
                 let mut output = None;

@@ -157,7 +157,7 @@ extern "C" int nectarlink_video_decoder_send(void* p, const uint8_t* data, size_
     auto* h = static_cast<Handle*>(p);
     return h->backend->decoder_send(h->object, data, len, error, n);
 }
-extern "C" int nectarlink_video_decoder_receive(void* p, NectarlinkDecodedNv12* frame, char* error, size_t n)
+extern "C" int nectarlink_video_decoder_receive(void* p, TawamDecodedNv12* frame, char* error, size_t n)
 {
     auto* h = static_cast<Handle*>(p);
     return h->backend->decoder_receive(h->object, frame, error, n);

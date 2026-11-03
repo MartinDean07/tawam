@@ -139,8 +139,8 @@ jobs:
           echo "APPIMAGE_RUNTIME=/tmp/runtime-x86_64" >> "$GITHUB_ENV"
       - name: Validate desktop entry and AppStream metadata
         run: |
-          desktop-file-validate desktop/packaging/linux/nectarlink.desktop
-          appstreamcli validate --no-net desktop/packaging/linux/org.nectarlink.desktop.metainfo.xml
+          desktop-file-validate desktop/packaging/linux/tawam.desktop
+          appstreamcli validate --no-net desktop/packaging/linux/no.martindean.tawam.desktop.metainfo.xml
       - name: Check the install script
         run: shellcheck -s sh desktop/packaging/linux/install.sh
       - name: Cache FFmpeg source archives
@@ -153,7 +153,7 @@ jobs:
           APPIMAGE_EXTRACT_AND_RUN: "1"
           FFMPEG_SOURCE_CACHE: ${{ runner.temp }}/ffmpeg-sources
         run: |
-          cargo build --release -p nectarlink-desktop
+          cargo build --release -p tawam-desktop
           bash ./desktop/packaging/linux/build-ffmpeg-backends.sh
           ./desktop/packaging/linux/build-deb.sh
           ./desktop/packaging/linux/build-rpm.sh
@@ -182,13 +182,13 @@ jobs:
           docker run --rm -v "$PWD/dist:/dist:ro" ubuntu:24.04 bash -euc '
             apt-get update -qq
             DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends /dist/*.deb >/dev/null
-            nectarlink-desktop --version'
+            tawam-desktop --version'
           docker run --rm -v "$PWD/dist:/dist:ro" fedora:40 bash -euc '
             dnf install -y -q --nogpgcheck /dist/*.rpm >/dev/null
-            nectarlink-desktop --version'
+            tawam-desktop --version'
           APPIMAGE_EXTRACT_AND_RUN=1 ./dist/*.AppImage --version
           mkdir -p /tmp/tarball && tar -xzf dist/*.tar.gz -C /tmp/tarball
-          /tmp/tarball/*/nectarlink-desktop --version
+          /tmp/tarball/*/tawam-desktop --version
       - name: Check that install.sh installs and removes each package
         # The one-line install, from these files instead of GitHub: the .deb on
         # Ubuntu, the .rpm on Fedora, and the tarball in a home folder.
@@ -197,13 +197,13 @@ jobs:
           for image in ubuntu:24.04 fedora:40; do
             docker run --rm -v "$PWD/dist:/dist:ro" -e NECTARLINK_ASSETS_DIR=/dist "$image" sh -euc '
               sh /dist/install.sh
-              nectarlink-desktop --version
+              tawam-desktop --version
               sh /dist/install.sh --uninstall
-              ! command -v nectarlink-desktop'
+              ! command -v tawam-desktop'
           done
           docker run --rm -v "$PWD/dist:/dist:ro" ubuntu:24.04 sh -euc '
             useradd -m user
-            su user -c "NECTARLINK_ASSETS_DIR=/dist sh /dist/install.sh && ~/.local/bin/nectarlink-desktop --version"'
+            su user -c "NECTARLINK_ASSETS_DIR=/dist sh /dist/install.sh && ~/.local/bin/tawam-desktop --version"'
           rm dist/SHA256SUMS.txt
       - uses: actions/upload-artifact@v7
         with:

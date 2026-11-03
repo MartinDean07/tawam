@@ -320,11 +320,11 @@ bool install_translator(rust::Str dir, rust::Str language)
             break;
     }
 
-    // NectarLink's own strings, staged beside the executable. A locale with no
+    // Tawam's own strings, staged beside the executable. A locale with no
     // translation (`nectarlink_es_ES.qm` missing), or English, stays English.
     bool installed = false;
     auto *app = new QTranslator(QCoreApplication::instance());
-    if (app->load(locale, QStringLiteral("nectarlink"), QStringLiteral("_"), folder)) {
+    if (app->load(locale, QStringLiteral("tawam"), QStringLiteral("_"), folder)) {
         installed = QCoreApplication::installTranslator(app);
         appTranslator() = app;
     } else {
@@ -667,7 +667,7 @@ bool runOnQtMainThreadSync(F &&fn, uint32_t timeout_ms = 500)
 std::unique_ptr<QGuiApplication> create_qt_app()
 {
     static int s_argc = 1;
-    static char s_arg0[] = "nectarlink";
+    static char s_arg0[] = "tawam";
     static char *s_argv[] = { s_arg0, nullptr };
 #ifdef __linux__
     auto app = std::unique_ptr<QGuiApplication>(new QApplication(s_argc, s_argv));

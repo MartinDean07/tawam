@@ -1490,7 +1490,7 @@ class Core(context: Context, private val scope: CoroutineScope) : EventListener 
 
     /**
      * Automatically sends non-sensitive text copied in the background while Elevated mode is running.
-     * Skips clips NectarLink itself wrote from a PC (`PhoneClipboard.isRecentEcho`).
+     * Skips clips Tawam itself wrote from a PC (`PhoneClipboard.isRecentEcho`).
      */
     fun onElevatedClipboardChanged(text: String, html: String?) {
         if (text.isBlank() || PhoneClipboard.isRecentEcho(text, html)) return
@@ -1959,7 +1959,7 @@ class Core(context: Context, private val scope: CoroutineScope) : EventListener 
             it.pairingJoin(link)
         } catch (e: NectarlinkException) {
             val failure = when (e) {
-                is NectarlinkException.InvalidPairingLink -> PairingFailure.Other("not a NectarLink code")
+                is NectarlinkException.InvalidPairingLink -> PairingFailure.Other("not a Tawam code")
                 is NectarlinkException.Denied -> PairingFailure.Rejected
                 else -> PairingFailure.Unreachable
             }
@@ -2327,7 +2327,7 @@ class Core(context: Context, private val scope: CoroutineScope) : EventListener 
                     } else {
                         current.outputDevices + app.nectarlink.core.AudioOutputDevice(
                             id = PHONE_SPEAKER_OUTPUT,
-                            name = "Phone speaker (NectarLink)",
+                            name = "Phone speaker (Tawam)",
                             isDefault = false,
                         )
                     }
@@ -2407,7 +2407,7 @@ class Core(context: Context, private val scope: CoroutineScope) : EventListener 
      * Blocks; call off the main thread.
      */
     fun readWatchFile(pcId: String, offset: Long, length: Long): ByteArray {
-        val running = node ?: throw java.io.IOException("NectarLink isn't running")
+        val running = node ?: throw java.io.IOException("Tawam isn't running")
         return running.watchFileRead(pcId, offset.toULong(), length.toULong()).data
     }
 
@@ -2532,7 +2532,7 @@ class Core(context: Context, private val scope: CoroutineScope) : EventListener 
     enum class RemoteAccess { Allowed, Denied, Offline, Unsupported }
 
     private companion object {
-        const val TAG = "Nectarlink"
+        const val TAG = "Tawam"
         /** Offered while notification access is granted (docs/protocol/capabilities.md). */
         val NOTIFICATION_CAPABILITIES = listOf("notify.mirror", "notify.reply", "notify.live")
         /** Sharing this phone's players, which also needs notification access. */

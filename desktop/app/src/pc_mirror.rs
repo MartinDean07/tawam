@@ -158,7 +158,7 @@ mod imp {
 
         let stop_on_failure = Arc::clone(&stop);
         if let Err(e) = std::thread::Builder::new()
-            .name("nectarlink-pc-mirror".into())
+            .name("tawam-pc-mirror".into())
             .spawn(move || run_capture_loop(peer, options, stop, force_keyframe))
         {
             // Not a session that claims to share with nothing behind it.

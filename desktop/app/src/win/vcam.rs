@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 //! Windows 11 Virtual Camera (`MFCreateVirtualCamera`) registration and
-//! session management for `"NectarLink Webcam"`.
+//! session management for `"Tawam Webcam"`.
 
 use std::ffi::c_void;
 use std::path::{Path, PathBuf};
@@ -34,7 +34,7 @@ use windows::{
 };
 
 pub const CLSID_STR: &str = "{8E6C3B74-5D4A-4B9E-9A12-7C8F1E2D3A40}";
-pub const FRIENDLY_NAME: &str = "NectarLink Webcam";
+pub const FRIENDLY_NAME: &str = "Tawam Webcam";
 pub const REGISTER_ARG: &str = "--register-vcam";
 pub const UNREGISTER_ARG: &str = "--unregister-vcam";
 
@@ -42,7 +42,7 @@ const HKLM_CLSID_PREFIX: &str = r"SOFTWARE\Classes\CLSID";
 const HKLM_FRAMESERVER_PREFIX: &str =
     r"SOFTWARE\Microsoft\Windows Media Foundation\Platform\FrameServer\Sources";
 
-/// Resolves `nectarlink_vcam.dll` alongside `nectarlink-desktop.exe`.
+/// Resolves `nectarlink_vcam.dll` alongside `tawam-desktop.exe`.
 pub fn dll_path() -> Option<PathBuf> {
     let exe = std::env::current_exe().ok()?;
     let dir = exe.parent()?;
@@ -140,7 +140,7 @@ pub fn register_under(
     let inproc_key = format!(r"{clsid_key}\InprocServer32");
     let fs_key = format!(r"{frameserver_prefix}\{CLSID_STR}");
 
-    create_and_set(root, &clsid_key, &[(None, "NectarLink Virtual Camera Media Source")])?;
+    create_and_set(root, &clsid_key, &[(None, "Tawam Virtual Camera Media Source")])?;
     create_and_set(root, &inproc_key, &[(None, dll_str.as_ref()), (Some("ThreadingModel"), "Both")])?;
     create_and_set(root, &fs_key, &[(Some("FriendlyName"), FRIENDLY_NAME)])?;
     Ok(())
@@ -168,7 +168,7 @@ pub fn unregister_hklm() -> Result<(), String> {
     unregister_under(HKEY_LOCAL_MACHINE, HKLM_CLSID_PREFIX, HKLM_FRAMESERVER_PREFIX)
 }
 
-/// Launches `nectarlink-desktop.exe <arg>` elevated via `ShellExecuteExW` (`"runas"`)
+/// Launches `tawam-desktop.exe <arg>` elevated via `ShellExecuteExW` (`"runas"`)
 /// and invokes `on_done` once the helper process exits.
 pub fn run_elevated(arg: &'static str, on_done: impl FnOnce(bool) + Send + 'static) {
     std::thread::spawn(move || {
@@ -243,7 +243,7 @@ impl std::fmt::Debug for VirtualCameraHandle {
 }
 
 impl VirtualCameraHandle {
-    /// Creates and starts the `"NectarLink Webcam"` session-lifetime virtual camera.
+    /// Creates and starts the `"Tawam Webcam"` session-lifetime virtual camera.
     /// Succeeds when `nectarlink_vcam.dll` is registered in `HKLM`.
     pub fn start() -> Result<Self, String> {
         let create =
@@ -297,7 +297,7 @@ mod tests {
     #[test]
     fn registers_checks_and_unregisters_under_test_key() {
         let pid = std::process::id();
-        let base = format!(r"Software\NectarlinkTest_Vcam_{pid}");
+        let base = format!(r"Software\TawamTest_Vcam_{pid}");
         let classes = format!(r"{base}\Classes\CLSID");
         let fs = format!(r"{base}\FrameServer\Sources");
 

@@ -21,7 +21,7 @@ if (-not $Setup) {
 }
 if (-not $Setup -or -not (Test-Path $Setup)) { throw "no setup installer found to test under target\package" }
 $dir = Join-Path $env:ProgramFiles 'Nectarlink'
-$exe = Join-Path $dir 'nectarlink-desktop.exe'
+$exe = Join-Path $dir 'tawam-desktop.exe'
 $uninstallKey = 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\Nectarlink'
 $shortcut = Join-Path $env:ProgramData 'Microsoft\Windows\Start Menu\Programs\Nectarlink.lnk'
 $desktopShortcut = Join-Path $env:PUBLIC 'Desktop\NectarLink.lnk'
@@ -121,7 +121,7 @@ Check "the update task is gone" ($null -eq (UpdateTask))
 # creates both and locks them like Program Files.
 $top = 'C:\nl smoke'
 $custom = Join-Path $top 'Apps\Nectarlink'
-$customExe = Join-Path $custom 'nectarlink-desktop.exe'
+$customExe = Join-Path $custom 'tawam-desktop.exe'
 $reg = 'HKLM:\Software\Nectarlink'
 function Test-Locked($path) {
     $acl = Get-Acl $path
@@ -163,7 +163,7 @@ $busy = Join-Path $top 'Busy\Nectarlink'
 New-Item -ItemType Directory -Force $busy | Out-Null
 Set-Content (Join-Path $busy 'someone-elses.txt') 'x'
 $run = Start-Process $Setup -ArgumentList "/S /ADMINONLY=1 /D=$busy" -Wait -PassThru
-Check "a folder with files in it is refused" ($run.ExitCode -ne 0 -and -not (Test-Path (Join-Path $busy 'nectarlink-desktop.exe')))
+Check "a folder with files in it is refused" ($run.ExitCode -ne 0 -and -not (Test-Path (Join-Path $busy 'tawam-desktop.exe')))
 Check "a refused folder leaves no update task" ($null -eq (UpdateTask))
 Remove-Item -Recurse -Force $top
 Write-Host "Installer smoke test passed."

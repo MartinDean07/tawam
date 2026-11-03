@@ -270,7 +270,7 @@ class AppDisplay(
                 Int::class.javaPrimitiveType,
                 Surface::class.java,
             )
-            val vd = m.invoke(null, "NectarlinkScreen", w, h, 0, surface) as? VirtualDisplay
+            val vd = m.invoke(null, "TawamScreen", w, h, 0, surface) as? VirtualDisplay
             if (vd != null) return vd
         }
         // 2. Shell DisplayManager instance with VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR
@@ -280,7 +280,7 @@ class AppDisplay(
         @SuppressLint("WrongConstant")
         return runCatching {
             manager.createVirtualDisplay(
-                "NectarlinkScreen",
+                "TawamScreen",
                 w,
                 h,
                 d,
@@ -289,7 +289,7 @@ class AppDisplay(
             )
         }.getOrElse {
             manager.createVirtualDisplay(
-                "NectarlinkScreen",
+                "TawamScreen",
                 w,
                 h,
                 d,
@@ -313,7 +313,7 @@ class AppDisplay(
         // Some of the flags are hidden ones (TRUSTED, OWN_FOCUS...), which
         // the shell may use.
         @SuppressLint("WrongConstant")
-        return manager.createVirtualDisplay("Nectarlink", w, h, d, surface, flags)
+        return manager.createVirtualDisplay("Tawam", w, h, d, surface, flags)
     }
 
     /** Hides the soft keyboard on this virtual display so typing from the PC never pops it up on the phone. */

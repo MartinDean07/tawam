@@ -26,7 +26,7 @@ import kotlin.system.exitProcess
  * hold Wireless debugging itself, and keeps working away from Wi-Fi.
  *
  * Shizuku starts [ShizukuShell] in a process of its own, as its own user,
- * and hands NectarLink a Binder to it. Through that it runs the same grants
+ * and hands Tawam a Binder to it. Through that it runs the same grants
  * and starts the same [InputServer] as the other ways do. Like root, it's
  * only used when that user is the shell (Shizuku started through Wireless
  * debugging or a PC), never when Shizuku runs as root.
@@ -54,7 +54,7 @@ object ShizukuElevated {
     /** Whether Shizuku's service is running and answering. */
     fun running(): Boolean = runCatching { Shizuku.pingBinder() }.getOrDefault(false)
 
-    /** Whether Shizuku is running, new enough, and lets NectarLink use it. */
+    /** Whether Shizuku is running, new enough, and lets Tawam use it. */
     fun allowed(): Boolean = running() && runCatching {
         !Shizuku.isPreV11() && Shizuku.getVersion() >= MIN_SERVER_VERSION &&
             Shizuku.checkSelfPermission() == PackageManager.PERMISSION_GRANTED
@@ -66,7 +66,7 @@ object ShizukuElevated {
     }
 
     /**
-     * Asks Shizuku to let NectarLink use it, if it hasn't yet; Shizuku shows
+     * Asks Shizuku to let Tawam use it, if it hasn't yet; Shizuku shows
      * its own dialog. Null when Shizuku isn't usable at all.
      */
     suspend fun requestPermission(): Problem? {
@@ -105,7 +105,7 @@ object ShizukuElevated {
             .tag("elevated")
             .version(app.nectarlink.android.BuildConfig.VERSION_CODE)
             .debuggable(app.nectarlink.android.BuildConfig.DEBUG)
-            // Ends with NectarLink, so the helper never outlives the app that controls it.
+            // Ends with Tawam, so the helper never outlives the app that controls it.
             .daemon(false)
         val conn = object : ServiceConnection {
             override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -183,10 +183,10 @@ object ShizukuElevated {
 }
 
 /**
- * Runs in the process Shizuku starts for NectarLink (as Shizuku's user,
- * normally the shell), not in the app. Answers only NectarLink itself and
+ * Runs in the process Shizuku starts for Tawam (as Shizuku's user,
+ * normally the shell), not in the app. Answers only Tawam itself and
  * Shizuku, and only to: say which user it runs as, run a grant from
- * [ShizukuShellRules.isGrant], and start [InputServer] from NectarLink's own
+ * [ShizukuShellRules.isGrant], and start [InputServer] from Tawam's own
  * APK with a token. Nothing it's given ends up in a shell command line.
  */
 class ShizukuShell(context: Context) : Binder() {
@@ -289,7 +289,7 @@ object ShizukuShellRules {
 
     /**
      * One of the grants [Elevated] runs before the helper starts, for
-     * NectarLink's own package and nothing else: `pm grant`, `appops set …
+     * Tawam's own package and nothing else: `pm grant`, `appops set …
      * allow` and `cmd notification allow_listener|allow_dnd`.
      */
     fun isGrant(command: String): Boolean {

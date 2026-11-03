@@ -20,7 +20,7 @@ android {
     ndkVersion = "30.0.16248370"
 
     defaultConfig {
-        applicationId = "app.nectarlink"
+        applicationId = "no.martindean.tawam"
         minSdk = 26
         targetSdk = 37
         versionCode = appVersionCode
@@ -54,7 +54,7 @@ android {
             create("release") {
                 storeFile = keystore
                 storePassword = System.getenv("NECTARLINK_KEYSTORE_PASSWORD")
-                keyAlias = "nectarlink"
+                keyAlias = "tawam"
                 keyPassword = System.getenv("NECTARLINK_KEYSTORE_PASSWORD")
             }
         }

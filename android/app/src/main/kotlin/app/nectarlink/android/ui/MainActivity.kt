@@ -310,7 +310,7 @@ class MainActivity : ComponentActivity() {
      */
     private fun handlePairingLink(intent: Intent?) {
         val link = intent?.takeIf { it.action == Intent.ACTION_VIEW }?.dataString ?: return
-        if (!link.startsWith("nectarlink://pair?")) return
+        if (!link.startsWith("tawam://pair?")) return
         if (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY != 0) return
         if (!PairingLinks(this).consume(link)) return
         pendingPairingLink = link

@@ -30,7 +30,7 @@ pub use shm::{
 #[cfg(windows)]
 pub use source::{SAMPLE_DURATION_100NS, VcamClassFactory, VcamMediaSource, VcamMediaStream};
 
-/// CLSID of the NectarLink Virtual Camera Media Foundation media source:
+/// CLSID of the Tawam Virtual Camera Media Foundation media source:
 /// `{8E6C3B74-5D4A-4B9E-9A12-7C8F1E2D3A40}`.
 #[cfg(windows)]
 pub const CLSID_NECTARLINK_VCAM: GUID = GUID::from_u128(0x8e6c3b74_5d4a_4b9e_9a12_7c8f1e2d3a40);
@@ -135,7 +135,7 @@ mod tests {
     fn media_source_delivers_placeholder_and_live_shared_memory_samples() {
         unsafe {
             let _ = MFStartup(MF_VERSION, MFSTARTUP_NOSOCKET);
-            let map_name = format!("Local\\NectarlinkVcamSrcTest_{}", std::process::id());
+            let map_name = format!("Local\\TawamVcamSrcTest_{}", std::process::id());
             let writer = SharedFrameMapping::open_or_create(&map_name).unwrap();
             writer.set_idle("Pixel 8");
 
@@ -297,7 +297,7 @@ mod tests {
 
     #[test]
     fn shared_memory_mirror_and_aspect_fit_round_trip() {
-        let map_name = format!("Local\\NectarlinkVcamShmTest_{}", std::process::id());
+        let map_name = format!("Local\\TawamVcamShmTest_{}", std::process::id());
         let writer = SharedFrameMapping::open_or_create(&map_name).unwrap();
         let reader = SharedFrameMapping::open_or_create(&map_name).unwrap();
 

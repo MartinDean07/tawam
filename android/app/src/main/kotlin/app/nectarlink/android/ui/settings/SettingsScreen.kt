@@ -1097,7 +1097,7 @@ private fun openAppInfoSettings(context: Context) {
     }
 }
 
-/** Shizuku's app, where it's started and where NectarLink is allowed. */
+/** Shizuku's app, where it's started and where Tawam is allowed. */
 private fun openShizuku(context: Context) {
     context.packageManager.getLaunchIntentForPackage(ShizukuElevated.PACKAGE)
         ?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -1295,7 +1295,7 @@ private fun WriteSettingsAccess(granted: Boolean) {
     }
 }
 
-/** Control from the PC: NectarLink's accessibility service, turned on in Android's settings. */
+/** Control from the PC: Tawam's accessibility service, turned on in Android's settings. */
 @Composable
 private fun ControlAccess(on: Boolean) {
     val context = LocalContext.current

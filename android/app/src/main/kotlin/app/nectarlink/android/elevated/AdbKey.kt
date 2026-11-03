@@ -41,7 +41,7 @@ internal class AdbKey private constructor(val privateKey: PrivateKey, val certif
                 }
             }
             val pair = KeyPairGenerator.getInstance("RSA").apply { initialize(2048, SecureRandom()) }.generateKeyPair()
-            val der = selfSignedCertificate(pair, "CN=Nectarlink")
+            val der = selfSignedCertificate(pair, "CN=Tawam")
             dir.mkdirs()
             certFile.writeBytes(der)
             keyFile.writeBytes(pair.private.encoded)

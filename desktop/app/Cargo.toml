@@ -1,5 +1,5 @@
 [package]
-name = "nectarlink-desktop"
+name = "tawam-desktop"
 description = "NectarLink for Windows: the desktop app"
 version.workspace = true
 edition.workspace = true
@@ -17,7 +17,7 @@ publish = false
 self-update = []
 
 [[bin]]
-name = "nectarlink-desktop"
+name = "tawam-desktop"
 path = "src/main.rs"
 
 [dependencies]

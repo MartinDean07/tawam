@@ -43,12 +43,12 @@ fn select_translation_dir(exe_dir: &Path) -> PathBuf {
     }
     #[cfg(target_os = "linux")]
     {
-        if let Some(rel_share) = exe_dir.parent().map(|p| p.join("share").join("nectarlink"))
+        if let Some(rel_share) = exe_dir.parent().map(|p| p.join("share").join("tawam"))
             && has_qm_files(&rel_share)
         {
             return rel_share;
         }
-        let sys_share = Path::new("/usr/share/nectarlink");
+        let sys_share = Path::new("/usr/share/tawam");
         if has_qm_files(sys_share) {
             return sys_share.to_path_buf();
         }

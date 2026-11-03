@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-//! NectarLink for Windows.
+//! Tawam for Windows.
 //!
 //! One process: Rust runs the core (`nectarlink-core`) and OS integration,
 //! Qt Quick draws the UI. Windows are created when opened and destroyed when
@@ -216,7 +216,7 @@ impl Platform for DesktopPlatform {
 /// Command-line options (also used by shortcuts and autostart).
 #[derive(Debug, Default)]
 struct Options {
-    /// Where to keep data (default: %LOCALAPPDATA%\Nectarlink).
+    /// Where to keep data (default: %LOCALAPPDATA%\Tawam).
     data_dir: Option<PathBuf>,
     /// Start in the tray without opening the window (autostart).
     minimized: bool,
@@ -359,7 +359,7 @@ fn parse_options_from<I: IntoIterator<Item = std::ffi::OsString>>(iter: I) -> Op
         // Sending doesn't need the window.
         options.minimized = true;
     } else if share_targets.is_empty() && !paths.is_empty() {
-        // Desktop entry `Exec=nectarlink-desktop %U` passes URLs or dropped files
+        // Desktop entry `Exec=tawam-desktop %U` passes URLs or dropped files
         // as positional arguments without `--share`.
         share_targets = paths.into_iter().map(|p| p.to_string_lossy().into_owned()).collect();
     }
@@ -377,7 +377,7 @@ fn parse_options_from<I: IntoIterator<Item = std::ffi::OsString>>(iter: I) -> Op
 }
 
 fn default_data_dir() -> PathBuf {
-    dirs::data_local_dir().unwrap_or_else(std::env::temp_dir).join("Nectarlink")
+    dirs::data_local_dir().unwrap_or_else(std::env::temp_dir).join("Tawam")
 }
 
 /// Network changes come in bursts; tell the core once things settle.
@@ -399,10 +399,10 @@ fn watch_network() {
     });
 }
 
-/// Phone notifications as Windows toasts, sent by "NectarLink" with the
+/// Phone notifications as Windows toasts, sent by "Tawam" with the
 /// app's icon (written as a PNG, which Windows needs as a file).
 fn start_toasts() {
-    let icon = core_host::host().data_dir.join("cache").join("nectarlink.png");
+    let icon = core_host::host().data_dir.join("cache").join("tawam.png");
     win::toast::start(icon, notifications::on_toast);
 }
 
@@ -436,7 +436,7 @@ fn run_setup_window(mode: setup::Mode) -> ExitCode {
             Ok(true) => return ExitCode::SUCCESS,
             Ok(false) => {}
             Err(e) => {
-                eprintln!("nectarlink: {e}");
+                eprintln!("tawam: {e}");
                 return ExitCode::FAILURE;
             }
         }
@@ -448,7 +448,7 @@ fn run_setup_window(mode: setup::Mode) -> ExitCode {
     #[cfg(not(target_os = "linux"))]
     let mut app = QGuiApplication::new();
     if let Some(mut app) = app.as_mut() {
-        app.as_mut().set_application_name(&QString::from("NectarLink Setup"));
+        app.as_mut().set_application_name(&QString::from("Tawam Setup"));
         app.as_mut().set_application_version(&QString::from(env!("CARGO_PKG_VERSION")));
     }
     // Before any QML loads, so every string is right on the first pass.
@@ -471,7 +471,7 @@ fn run_setup_window(mode: setup::Mode) -> ExitCode {
 fn main() -> ExitCode {
     let options = parse_options();
     if options.version {
-        println!("nectarlink-desktop {}", env!("CARGO_PKG_VERSION"));
+        println!("tawam-desktop {}", env!("CARGO_PKG_VERSION"));
         return ExitCode::SUCCESS;
     }
     if let Some(installer) = options.setup.clone().filter(|p| !p.as_os_str().is_empty()) {
@@ -492,7 +492,7 @@ fn main() -> ExitCode {
         return match win::vcam::register_hklm() {
             Ok(()) => ExitCode::SUCCESS,
             Err(e) => {
-                eprintln!("nectarlink: register-vcam failed: {e}");
+                eprintln!("tawam: register-vcam failed: {e}");
                 ExitCode::FAILURE
             }
         };
@@ -501,19 +501,19 @@ fn main() -> ExitCode {
         return match win::vcam::unregister_hklm() {
             Ok(()) => ExitCode::SUCCESS,
             Err(e) => {
-                eprintln!("nectarlink: unregister-vcam failed: {e}");
+                eprintln!("tawam: unregister-vcam failed: {e}");
                 ExitCode::FAILURE
             }
         };
     }
     // The check starts the whole app, so never on the user's own data.
     if options.ui_check && options.data_dir.is_none() {
-        eprintln!("nectarlink: --ui-check needs --data-dir");
+        eprintln!("tawam: --ui-check needs --data-dir");
         return ExitCode::FAILURE;
     }
     let data_dir = options.data_dir.clone().unwrap_or_else(default_data_dir);
     if let Err(e) = std::fs::create_dir_all(&data_dir) {
-        eprintln!("nectarlink: can't create {}: {e}", data_dir.display());
+        eprintln!("tawam: can't create {}: {e}", data_dir.display());
         return ExitCode::FAILURE;
     }
     logging::init(&data_dir);
@@ -523,7 +523,7 @@ fn main() -> ExitCode {
     if options.ui_check
         && let Err(e) = nectarlink_core::add_ui_check_phone(&data_dir)
     {
-        eprintln!("nectarlink: --ui-check: can't add the pretend phone: {e}");
+        eprintln!("tawam: --ui-check: can't add the pretend phone: {e}");
         return ExitCode::FAILURE;
     }
     if options.widget_provider {
@@ -668,7 +668,7 @@ fn main() -> ExitCode {
     #[cfg(not(target_os = "linux"))]
     let mut app = QGuiApplication::new();
     if let Some(mut app) = app.as_mut() {
-        app.as_mut().set_application_name(&QString::from("Nectarlink"));
+        app.as_mut().set_application_name(&QString::from("Tawam"));
         app.as_mut().set_application_version(&QString::from(env!("CARGO_PKG_VERSION")));
     }
     // Before any QML loads, so every string is right on the first pass.
@@ -723,10 +723,10 @@ fn main() -> ExitCode {
     if options.ui_check {
         let problems = bridge::native::ffi::qml_problem_count();
         if problems > 0 {
-            eprintln!("nectarlink: --ui-check: {problems} QML warning(s) or error(s), see above");
+            eprintln!("tawam: --ui-check: {problems} QML warning(s) or error(s), see above");
             return ExitCode::FAILURE;
         }
-        eprintln!("nectarlink: --ui-check: no QML warnings");
+        eprintln!("tawam: --ui-check: no QML warnings");
     }
     ExitCode::from(u8::try_from(code).unwrap_or(1))
 }
@@ -740,11 +740,11 @@ mod tests {
     #[test]
     fn parse_options_recognizes_share_flag() {
         let opts = parse_options_from(
-            ["--data-dir", r"C:\Temp\nectarlink-test", "--share", r"C:\photo.jpg", "https://example.com"]
+            ["--data-dir", r"C:\Temp\tawam-test", "--share", r"C:\photo.jpg", "https://example.com"]
                 .into_iter()
                 .map(OsString::from),
         );
-        assert_eq!(opts.data_dir, Some(PathBuf::from(r"C:\Temp\nectarlink-test")));
+        assert_eq!(opts.data_dir, Some(PathBuf::from(r"C:\Temp\tawam-test")));
         assert!(opts.minimized);
         assert_eq!(
             opts.share,
@@ -759,27 +759,27 @@ mod tests {
     #[test]
     fn parse_options_recognizes_ui_check_flag() {
         let opts = parse_options_from(
-            ["--ui-check", "--data-dir", r"C:\Temp\nectarlink-test"].into_iter().map(OsString::from),
+            ["--ui-check", "--data-dir", r"C:\Temp\tawam-test"].into_iter().map(OsString::from),
         );
         assert!(opts.ui_check);
         assert!(!opts.minimized);
-        assert_eq!(opts.data_dir, Some(PathBuf::from(r"C:\Temp\nectarlink-test")));
+        assert_eq!(opts.data_dir, Some(PathBuf::from(r"C:\Temp\tawam-test")));
         assert!(!parse_options_from(["--minimized"].into_iter().map(OsString::from)).ui_check);
     }
 
     #[test]
     fn parse_options_recognizes_task_flag() {
         let find_opts = parse_options_from(
-            ["--data-dir", r"C:\Temp\nectarlink-test", "--task", "find-phone"]
+            ["--data-dir", r"C:\Temp\tawam-test", "--task", "find-phone"]
                 .into_iter()
                 .map(OsString::from),
         );
-        assert_eq!(find_opts.data_dir, Some(PathBuf::from(r"C:\Temp\nectarlink-test")));
+        assert_eq!(find_opts.data_dir, Some(PathBuf::from(r"C:\Temp\tawam-test")));
         assert_eq!(find_opts.task.as_deref(), Some("find-phone"));
         assert!(find_opts.minimized);
 
         let timeline_opts = parse_options_from(
-            ["--data-dir", r"C:\Temp\nectarlink-test", "--task", "open-timeline"]
+            ["--data-dir", r"C:\Temp\tawam-test", "--task", "open-timeline"]
                 .into_iter()
                 .map(OsString::from),
         );
@@ -790,9 +790,9 @@ mod tests {
     #[test]
     fn parse_options_recognizes_widget_provider_flag() {
         let opts = parse_options_from(
-            ["--data-dir", r"C:\Temp\nectarlink-test", "--widget-provider"].into_iter().map(OsString::from),
+            ["--data-dir", r"C:\Temp\tawam-test", "--widget-provider"].into_iter().map(OsString::from),
         );
-        assert_eq!(opts.data_dir, Some(PathBuf::from(r"C:\Temp\nectarlink-test")));
+        assert_eq!(opts.data_dir, Some(PathBuf::from(r"C:\Temp\tawam-test")));
         assert!(opts.widget_provider);
     }
 

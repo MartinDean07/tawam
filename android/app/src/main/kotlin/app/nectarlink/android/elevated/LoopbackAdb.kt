@@ -27,7 +27,7 @@ internal object LoopbackAdb {
     /** Where Linux picks listening ports nobody asked a number for. */
     private val EPHEMERAL = 32768..60999
 
-    /** NectarLink's own fixed ports (LocalSend, USB), never adbd's. */
+    /** Tawam's own fixed ports (LocalSend, USB), never adbd's. */
     private val OWN = 53317..53322
 
     private const val OPEN_MS = 50
@@ -37,7 +37,7 @@ internal object LoopbackAdb {
     /** Whether to use this instead of mDNS: Android 17 and later (API 37). */
     fun preferred(): Boolean = Build.VERSION.SDK_INT >= 37
 
-    /** The ports listening on 127.0.0.1 in the ephemeral range, except NectarLink's own. */
+    /** The ports listening on 127.0.0.1 in the ephemeral range, except Tawam's own. */
     suspend fun openPorts(): List<Int> = withContext(Dispatchers.IO) {
         val ports = EPHEMERAL.filterNot { it in OWN }
         coroutineScope {

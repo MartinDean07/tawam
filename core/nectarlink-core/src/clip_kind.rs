@@ -838,7 +838,7 @@ mod tests {
         let positives = [
             ("https://nectarlink.app/docs?tab=1#top", "https://nectarlink.app/docs?tab=1#top"),
             ("  http://example.com/path/to/page  ", "http://example.com/path/to/page"),
-            ("HTTPS://github.com/thtbee/nectarlink", "https://github.com/thtbee/nectarlink"),
+            ("HTTPS://github.com/MartinDean07/tawam", "https://github.com/MartinDean07/tawam"),
             (
                 "www.wikipedia.org/wiki/Rust_(programming_language)",
                 "https://www.wikipedia.org/wiki/Rust_(programming_language)",

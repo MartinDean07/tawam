@@ -5,7 +5,7 @@
 #include <cstdint>
 
 extern "C" {
-struct NectarlinkDecodedNv12
+struct TawamDecodedNv12
 {
     const uint8_t* y;
     const uint8_t* uv;
@@ -25,7 +25,7 @@ const char* nectarlink_video_decoder_backend(const void* decoder);
 int nectarlink_video_decoder_send(void* decoder, const uint8_t* bytes, size_t length,
                                  char* error, size_t capacity);
 // The returned planes remain valid until receive, flush, or next_device is called again.
-int nectarlink_video_decoder_receive(void* decoder, NectarlinkDecodedNv12* frame,
+int nectarlink_video_decoder_receive(void* decoder, TawamDecodedNv12* frame,
                                     char* error, size_t capacity);
 void nectarlink_video_decoder_flush(void* decoder);
 

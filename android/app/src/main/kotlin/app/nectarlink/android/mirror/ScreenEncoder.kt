@@ -90,7 +90,7 @@ internal class ScreenEncoder(
                     val current = display
                     if (current == null) {
                         display = projection.createVirtualDisplay(
-                            "Nectarlink", size.width, size.height, size.dpi,
+                            "Tawam", size.width, size.height, size.dpi,
                             DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR, active.surface, null, null,
                         )
                     } else {

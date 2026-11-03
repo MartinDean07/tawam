@@ -1,5 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="512" height="512">
-  <rect x="4" y="4" width="92" height="92" rx="22" fill="#2C1600"/>
-  <rect x="4.75" y="4.75" width="90.5" height="90.5" rx="21.25" fill="none" stroke="#8A5100" stroke-opacity="0.45" stroke-width="1.5"/>
-  <g transform="rotate(-25 50 50)"><path d="M 41.5 42.5 C 26 24, 13.5 31, 13.5 50 C 13.5 69, 26 76, 41.5 57.5" fill="none" stroke="#FFF8F3" stroke-width="10.4" stroke-linecap="round"/><path d="M 58.5 42.5 C 74 24, 86.5 31, 86.5 50 C 86.5 69, 74 76, 58.5 57.5" fill="none" stroke="#FFDDB8" stroke-width="10.4" stroke-linecap="round"/><circle cx="50" cy="50" r="8.2" fill="#FFB95F"/></g>
+  <!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+  <!-- Tawam (توأم, "twin"): two identical devices, overlapping where they share. -->
+  <defs><radialGradient id="g" cx="50" cy="50" r="46" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#15545D"/><stop offset="1" stop-color="#0E3B43"/></radialGradient></defs>
+  <rect x="4" y="4" width="92" height="92" rx="22" fill="#0E3B43"/>
+  <rect x="4.6" y="4.6" width="90.8" height="90.8" rx="21.4" fill="none" stroke="#7FD1C7" stroke-opacity="0.35" stroke-width="1.2"/>
+  <rect x="24" y="24" width="38" height="38" rx="9" fill="#F2D7A6"/>
+  <rect x="38" y="38" width="38" height="38" rx="9" fill="#FFFFFF"/>
+  <path d="M38,47a9,9 0 0 1 9,-9h6a9,9 0 0 1 9,9v6a9,9 0 0 1 -9,9h-6a9,9 0 0 1 -9,-9z" fill="#2E8C86"/>
 </svg>

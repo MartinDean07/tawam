@@ -48,10 +48,10 @@ import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
 
 /** Pairing links start with this; anything else is ignored while scanning. */
-private const val LINK_PREFIX = "nectarlink://pair?"
+private const val LINK_PREFIX = "tawam://pair?"
 
 /**
- * A camera preview that reports the first NectarLink pairing link it sees.
+ * A camera preview that reports the first Tawam pairing link it sees.
  * Asks for the camera permission if needed.
  */
 @Composable

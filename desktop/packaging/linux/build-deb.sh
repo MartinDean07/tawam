@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: GPL-3.0-or-later
-# Builds a Debian/Ubuntu .deb package for NectarLink Desktop:
+# Builds a Debian/Ubuntu .deb package for Tawam Desktop:
 #   dist/nectarlink_<version>_<arch>.deb
 
 set -euo pipefail
@@ -32,57 +32,57 @@ if [[ -z "${QMAKE:-}" ]]; then
     fi
 fi
 
-BIN_PATH="${BIN_PATH:-${REPO_ROOT}/target/release/nectarlink-desktop}"
+BIN_PATH="${BIN_PATH:-${REPO_ROOT}/target/release/tawam-desktop}"
 if [[ ! -f "${BIN_PATH}" ]]; then
-    echo "Building nectarlink-desktop (release)..."
-    (cd "${REPO_ROOT}" && cargo build --release -p nectarlink-desktop)
+    echo "Building tawam-desktop (release)..."
+    (cd "${REPO_ROOT}" && cargo build --release -p tawam-desktop)
 fi
 
-STAGE_DIR="$(mktemp -d -t nectarlink-deb-XXXXXX)"
+STAGE_DIR="$(mktemp -d -t tawam-deb-XXXXXX)"
 trap 'rm -rf "${STAGE_DIR}"' EXIT
 
 PKG_ROOT="${STAGE_DIR}/nectarlink_${VERSION}_${DEB_ARCH}"
 mkdir -p \
     "${PKG_ROOT}/DEBIAN" \
     "${PKG_ROOT}/usr/bin" \
-    "${PKG_ROOT}/usr/lib/nectarlink" \
-    "${PKG_ROOT}/usr/share/nectarlink" \
+    "${PKG_ROOT}/usr/lib/tawam" \
+    "${PKG_ROOT}/usr/share/tawam" \
     "${PKG_ROOT}/usr/share/applications" \
     "${PKG_ROOT}/usr/share/metainfo" \
     "${PKG_ROOT}/usr/share/icons/hicolor/256x256/apps" \
     "${PKG_ROOT}/usr/share/icons/hicolor/512x512/apps" \
     "${PKG_ROOT}/usr/share/icons/hicolor/scalable/apps"
 
-install -m 0755 "${BIN_PATH}" "${PKG_ROOT}/usr/lib/nectarlink/nectarlink-desktop"
+install -m 0755 "${BIN_PATH}" "${PKG_ROOT}/usr/lib/tawam/tawam-desktop"
 for adapter in "$(dirname "${BIN_PATH}")"/libnectarlink-video-ffmpeg*.so; do
-    [[ ! -f "${adapter}" ]] || install -m 0755 "${adapter}" "${PKG_ROOT}/usr/lib/nectarlink/"
+    [[ ! -f "${adapter}" ]] || install -m 0755 "${adapter}" "${PKG_ROOT}/usr/lib/tawam/"
 done
-cat > "${PKG_ROOT}/usr/bin/nectarlink-desktop" <<'EOF'
+cat > "${PKG_ROOT}/usr/bin/tawam-desktop" <<'EOF'
 #!/usr/bin/env sh
-if [ -d /usr/lib/nectarlink/lib ]; then
-    export LD_LIBRARY_PATH="/usr/lib/nectarlink/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
-    export QT_PLUGIN_PATH="/usr/lib/nectarlink/plugins${QT_PLUGIN_PATH:+:${QT_PLUGIN_PATH}}"
-    export QML2_IMPORT_PATH="/usr/lib/nectarlink/qml${QML2_IMPORT_PATH:+:${QML2_IMPORT_PATH}}"
+if [ -d /usr/lib/tawam/lib ]; then
+    export LD_LIBRARY_PATH="/usr/lib/tawam/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+    export QT_PLUGIN_PATH="/usr/lib/tawam/plugins${QT_PLUGIN_PATH:+:${QT_PLUGIN_PATH}}"
+    export QML2_IMPORT_PATH="/usr/lib/tawam/qml${QML2_IMPORT_PATH:+:${QML2_IMPORT_PATH}}"
 fi
-exec /usr/lib/nectarlink/nectarlink-desktop "$@"
+exec /usr/lib/tawam/tawam-desktop "$@"
 EOF
-chmod 0755 "${PKG_ROOT}/usr/bin/nectarlink-desktop"
+chmod 0755 "${PKG_ROOT}/usr/bin/tawam-desktop"
 
 for qm in "$(dirname "${BIN_PATH}")"/nectarlink_*.qm; do
     if [[ -f "${qm}" ]]; then
-        install -m 0644 "${qm}" "${PKG_ROOT}/usr/share/nectarlink/$(basename "${qm}")"
+        install -m 0644 "${qm}" "${PKG_ROOT}/usr/share/tawam/$(basename "${qm}")"
     fi
 done
 
-install -m 0644 "${SCRIPT_DIR}/nectarlink.desktop" "${PKG_ROOT}/usr/share/applications/nectarlink.desktop"
-install -m 0644 "${SCRIPT_DIR}/org.nectarlink.desktop.metainfo.xml" "${PKG_ROOT}/usr/share/metainfo/org.nectarlink.desktop.metainfo.xml"
+install -m 0644 "${SCRIPT_DIR}/tawam.desktop" "${PKG_ROOT}/usr/share/applications/tawam.desktop"
+install -m 0644 "${SCRIPT_DIR}/no.martindean.tawam.desktop.metainfo.xml" "${PKG_ROOT}/usr/share/metainfo/no.martindean.tawam.desktop.metainfo.xml"
 
 if [[ -f "${REPO_ROOT}/assets/brand/icon-512.png" ]]; then
-    install -m 0644 "${REPO_ROOT}/assets/brand/icon-512.png" "${PKG_ROOT}/usr/share/icons/hicolor/512x512/apps/nectarlink.png"
-    install -m 0644 "${REPO_ROOT}/assets/brand/icon-512.png" "${PKG_ROOT}/usr/share/icons/hicolor/256x256/apps/nectarlink.png"
+    install -m 0644 "${REPO_ROOT}/assets/brand/icon-512.png" "${PKG_ROOT}/usr/share/icons/hicolor/512x512/apps/tawam.png"
+    install -m 0644 "${REPO_ROOT}/assets/brand/icon-512.png" "${PKG_ROOT}/usr/share/icons/hicolor/256x256/apps/tawam.png"
 fi
 if [[ -f "${REPO_ROOT}/assets/brand/icon.svg" ]]; then
-    install -m 0644 "${REPO_ROOT}/assets/brand/icon.svg" "${PKG_ROOT}/usr/share/icons/hicolor/scalable/apps/nectarlink.svg"
+    install -m 0644 "${REPO_ROOT}/assets/brand/icon.svg" "${PKG_ROOT}/usr/share/icons/hicolor/scalable/apps/tawam.svg"
 fi
 
 QT_DEPENDS=""
@@ -101,8 +101,8 @@ bundle_private_qt_if_needed() {
         return 0
     fi
 
-    echo "Bundling private Qt runtime from ${qt_libs} into /usr/lib/nectarlink..."
-    local dest="${PKG_ROOT}/usr/lib/nectarlink"
+    echo "Bundling private Qt runtime from ${qt_libs} into /usr/lib/tawam..."
+    local dest="${PKG_ROOT}/usr/lib/tawam"
     mkdir -p "${dest}/lib" "${dest}/plugins" "${dest}/qml"
 
     local pattern
@@ -170,7 +170,7 @@ bundle_private_qt_if_needed
 INSTALLED_SIZE="$(du -sk "${PKG_ROOT}/usr" | awk '{print $1}')"
 
 cat > "${PKG_ROOT}/DEBIAN/control" <<EOF
-Package: nectarlink
+Package: tawam
 Version: ${VERSION}
 Section: net
 Priority: optional
@@ -178,10 +178,10 @@ Architecture: ${DEB_ARCH}
 Installed-Size: ${INSTALLED_SIZE}
 Depends: libc6, libgcc-s1, libstdc++6, libgl1, libx11-6, libxcb1, libxkbcommon0, libwayland-client0, libfontconfig1, libfreetype6, libdbus-1-3, libegl1, libglib2.0-0t64 | libglib2.0-0, libgssapi-krb5-2${QT_DEPENDS}
 Recommends: fuse3, curl | wget, ffmpeg, gstreamer1.0-tools, gstreamer1.0-pipewire, gstreamer1.0-plugins-base, libopenh264-8 | libopenh264-7 | libopenh264-6 | libavcodec62 | libavcodec61 | libavcodec60, pipewire-bin | pulseaudio-utils, pipewire, wl-clipboard, xclip, xdg-utils, avahi-daemon, bluez, v4l2loopback-dkms, policykit-1 | pkexec
-Maintainer: thtbee <https://github.com/thtbee/nectarlink>
-Homepage: https://github.com/thtbee/nectarlink
+Maintainer: Martin Dean <https://github.com/MartinDean07/tawam>
+Homepage: https://github.com/MartinDean07/tawam
 Description: Connect your Android phone and Linux PC over LAN
- NectarLink links your Android phone and Linux desktop over your local
+ Tawam links your Android phone and Linux desktop over your local
  network with end-to-end encryption, clipboard sync, notification
  mirroring, file transfer, screen/camera/audio streaming, and SMS/calls.
 EOF

@@ -252,9 +252,9 @@ class SendActivity : ComponentActivity() {
             return webLink(text)
         }
 
-        const val ACTION_SEND_CLIPBOARD = "app.nectarlink.action.SEND_CLIPBOARD"
-        const val ACTION_SEND_FILES = "app.nectarlink.action.SEND_FILES"
-        const val EXTRA_PC_ID = "app.nectarlink.extra.PC_ID"
+        const val ACTION_SEND_CLIPBOARD = "no.martindean.tawam.action.SEND_CLIPBOARD"
+        const val ACTION_SEND_FILES = "no.martindean.tawam.action.SEND_FILES"
+        const val EXTRA_PC_ID = "no.martindean.tawam.extra.PC_ID"
 
         fun sendClipboardIntent(context: Context, pcId: String? = null): Intent =
             Intent(context, SendActivity::class.java)

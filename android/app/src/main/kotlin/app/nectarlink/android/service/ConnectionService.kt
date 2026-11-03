@@ -275,7 +275,7 @@ class ConnectionService : LifecycleService() {
     )
 
     companion object {
-        private const val TAG = "Nectarlink"
+        private const val TAG = "Tawam"
         private const val UPDATE_WAKE_MS = 6L * 3600 * 1000
         /** How often to look at the app in front while the screen is on and Pause for banking apps is set up. */
         private const val BANKING_POLL_MS = 800L
@@ -285,8 +285,8 @@ class ConnectionService : LifecycleService() {
         private const val RINGING_ID = 2
         private const val CHANNEL_CONNECTION = "connection"
         private const val CHANNEL_RINGING = "ringing"
-        private const val ACTION_STOP_RINGING = "app.nectarlink.action.STOP_RINGING"
-        internal const val ACTION_STOP_SERVICE = "app.nectarlink.action.STOP_SERVICE"
+        private const val ACTION_STOP_RINGING = "no.martindean.tawam.action.STOP_RINGING"
+        internal const val ACTION_STOP_SERVICE = "no.martindean.tawam.action.STOP_SERVICE"
 
         /** Starts the service when allowed by Android's foreground-service rules. */
         fun start(context: Context) {

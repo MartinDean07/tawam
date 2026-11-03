@@ -36,7 +36,7 @@ class AppFonts(assets: AssetManager) {
     )
 }
 
-val LocalAppFonts = staticCompositionLocalOf<AppFonts> { error("NectarlinkTheme provides the fonts") }
+val LocalAppFonts = staticCompositionLocalOf<AppFonts> { error("TawamTheme provides the fonts") }
 
 /**
  * Material's type scale (sizes and line heights suit a phone) in the bundled

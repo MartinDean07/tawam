@@ -195,7 +195,7 @@ fn shaders_qrc() -> PathBuf {
 /// Task Manager show).
 fn windows_resources() {
     let out = PathBuf::from(std::env::var_os("OUT_DIR").expect("OUT_DIR"));
-    let ico = out.join("nectarlink.ico");
+    let ico = out.join("tawam.ico");
     write_if_changed(&ico, icon_file());
     let version = std::env::var("CARGO_PKG_VERSION").expect("version");
     let numbers: Vec<&str> = version.split(['.', '-', '+']).take(3).collect();
@@ -214,13 +214,13 @@ BEGIN
   BEGIN
     BLOCK "040904B0"
     BEGIN
-      VALUE "CompanyName", "The NectarLink contributors"
-      VALUE "FileDescription", "NectarLink"
+      VALUE "CompanyName", "The Tawam contributors"
+      VALUE "FileDescription", "Tawam"
       VALUE "FileVersion", "{version}"
-      VALUE "InternalName", "nectarlink-desktop"
+      VALUE "InternalName", "tawam-desktop"
       VALUE "LegalCopyright", "GPL-3.0-or-later"
-      VALUE "OriginalFilename", "nectarlink-desktop.exe"
-      VALUE "ProductName", "NectarLink"
+      VALUE "OriginalFilename", "tawam-desktop.exe"
+      VALUE "ProductName", "Tawam"
       VALUE "ProductVersion", "{version}"
     END
   END
@@ -232,7 +232,7 @@ END
 "#,
         ico = ico.display().to_string().replace('\\', "/"),
     );
-    let rc_path = out.join("nectarlink.rc");
+    let rc_path = out.join("tawam.rc");
     write_if_changed(&rc_path, rc);
     embed_resource::compile(&rc_path, embed_resource::NONE).manifest_required().expect("compile resources");
 }
@@ -416,7 +416,7 @@ fn main() {
         println!("cargo:rustc-link-lib=Qt6Quick");
         println!("cargo:rustc-link-lib=Qt6Widgets");
         println!(
-            "cargo:rustc-link-arg=-Wl,-rpath,$ORIGIN:$ORIGIN/lib:$ORIGIN/../lib:$ORIGIN/../lib/nectarlink/lib"
+            "cargo:rustc-link-arg=-Wl,-rpath,$ORIGIN:$ORIGIN/lib:$ORIGIN/../lib:$ORIGIN/../lib/tawam/lib"
         );
     } else if std::env::var("CARGO_CFG_TARGET_OS").as_deref() == Ok("macos") {
         println!("cargo:rustc-link-lib=framework=AppKit");

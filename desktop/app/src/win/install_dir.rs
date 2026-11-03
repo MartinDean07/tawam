@@ -2,7 +2,7 @@
 //! Where setup installs the app (#102): Program Files by default, or a
 //! folder the user picks.
 //!
-//! Updates run a task as SYSTEM that starts `nectarlink-desktop.exe` from the
+//! Updates run a task as SYSTEM that starts `tawam-desktop.exe` from the
 //! install folder, and the installer runs it with administrator rights to
 //! close the old copy. That's only safe where nobody but administrators can
 //! change what's at that path. The installer locks the install folder (and
@@ -30,7 +30,7 @@ use windows::{
 use crate::{i18n::tr, setup::Placement};
 
 /// The folder the app goes into inside the one the user picks.
-pub const FOLDER_NAME: &str = "Nectarlink";
+pub const FOLDER_NAME: &str = "Tawam";
 
 /// Longest install folder accepted: the app's deepest file adds about 90
 /// characters, and it has to stay under Windows' 260.
@@ -59,7 +59,7 @@ pub fn default_dir() -> PathBuf {
     program_files.join(FOLDER_NAME)
 }
 
-/// The install folder for a folder the user picked: a `Nectarlink` folder in
+/// The install folder for a folder the user picked: a `Tawam` folder in
 /// it, unless they picked one with that name.
 pub fn target_dir(chosen: &Path) -> PathBuf {
     let named = chosen.file_name().is_some_and(|name| name.eq_ignore_ascii_case(FOLDER_NAME));
@@ -240,19 +240,19 @@ mod tests {
 
     #[test]
     fn the_app_goes_in_its_own_folder() {
-        assert_eq!(target_dir(Path::new(r"D:\")), Path::new(r"D:\Nectarlink"));
-        assert_eq!(target_dir(Path::new(r"D:\Apps")), Path::new(r"D:\Apps\Nectarlink"));
-        assert_eq!(target_dir(Path::new(r"D:\Apps\nectarlink")), Path::new(r"D:\Apps\nectarlink"));
+        assert_eq!(target_dir(Path::new(r"D:\")), Path::new(r"D:\Tawam"));
+        assert_eq!(target_dir(Path::new(r"D:\Apps")), Path::new(r"D:\Apps\Tawam"));
+        assert_eq!(target_dir(Path::new(r"D:\Apps\tawam")), Path::new(r"D:\Apps\tawam"));
         assert!(default_dir().ends_with(FOLDER_NAME));
     }
 
     #[test]
     fn only_local_drive_paths_have_a_letter() {
-        assert_eq!(drive_letter(Path::new(r"d:\Apps\Nectarlink")), Some('D'));
-        assert_eq!(drive_letter(Path::new(r"\\server\share\Nectarlink")), None);
-        assert_eq!(drive_letter(Path::new(r"\\?\D:\Nectarlink")), None);
-        assert_eq!(drive_letter(Path::new(r"D:Nectarlink")), None);
-        assert_eq!(drive_letter(Path::new(r"Apps\Nectarlink")), None);
+        assert_eq!(drive_letter(Path::new(r"d:\Apps\Tawam")), Some('D'));
+        assert_eq!(drive_letter(Path::new(r"\\server\share\Tawam")), None);
+        assert_eq!(drive_letter(Path::new(r"\\?\D:\Tawam")), None);
+        assert_eq!(drive_letter(Path::new(r"D:Tawam")), None);
+        assert_eq!(drive_letter(Path::new(r"Apps\Tawam")), None);
     }
 
     #[test]

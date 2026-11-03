@@ -22,8 +22,8 @@ class AppUpdaterTest {
     @Test
     fun findsTheApkHash() {
         val hash = "a".repeat(64)
-        val sums = "$hash  Nectarlink-9.0.0-android.apk\n${"b".repeat(64)}  Nectarlink-9.0.0-x64-setup.exe\n"
-        assertEquals(hash, AppUpdater.listedHash(sums, "Nectarlink-9.0.0-android.apk"))
+        val sums = "$hash  Tawam-9.0.0-android.apk\n${"b".repeat(64)}  Tawam-9.0.0-x64-setup.exe\n"
+        assertEquals(hash, AppUpdater.listedHash(sums, "Tawam-9.0.0-android.apk"))
         assertNull(AppUpdater.listedHash(sums, "missing.apk"))
         assertEquals("c".repeat(64), AppUpdater.listedHash("${"C".repeat(64)} *x.apk", "x.apk"))
     }

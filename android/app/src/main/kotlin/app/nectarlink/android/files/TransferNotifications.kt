@@ -27,7 +27,7 @@ internal object TransferNotifications {
     private const val CHANNEL_PROGRESS = "transfers"
     private const val CHANNEL_RECEIVED = "received"
     private const val SENT_TIMEOUT_MS = 8_000L
-    const val ACTION_CANCEL = "app.nectarlink.action.CANCEL_TRANSFER"
+    const val ACTION_CANCEL = "no.martindean.tawam.action.CANCEL_TRANSFER"
     const val EXTRA_ID = "transfer"
 
     fun createChannels(context: Context) {

@@ -30,8 +30,8 @@ import kotlinx.coroutines.flow.asStateFlow
 /**
  * Pause for banking apps: many banking apps refuse to run while Developer
  * options, USB or Wireless debugging are on, or while an accessibility
- * service is enabled, all of which NectarLink's Elevated and Assist use.
- * While an app the user chose is in front, NectarLink turns those off, and
+ * service is enabled, all of which Tawam's Elevated and Assist use.
+ * While an app the user chose is in front, Tawam turns those off, and
  * turns back on exactly what it turned off once the user leaves.
  *
  * Changing them needs WRITE_SECURE_SETTINGS (Elevated grants it once), and
@@ -55,7 +55,7 @@ object BankingPause {
 
     private const val CHANNEL = "banking_pause"
     private const val NOTIFICATION_ID = 41
-    private const val ACTION_RESUME = "app.nectarlink.action.BANKING_RESUME"
+    private const val ACTION_RESUME = "no.martindean.tawam.action.BANKING_RESUME"
 
     private val _paused = MutableStateFlow(false)
     /** Whether things are paused for a banking app now. */
@@ -79,11 +79,11 @@ object BankingPause {
         if (apps.isEmpty() && isPaused(context)) resume(context)
     }
 
-    /** Whether NectarLink may change these settings (granted when Elevated first starts). */
+    /** Whether Tawam may change these settings (granted when Elevated first starts). */
     fun canChangeSettings(context: Context): Boolean =
         context.checkSelfPermission(Manifest.permission.WRITE_SECURE_SETTINGS) == PackageManager.PERMISSION_GRANTED
 
-    /** Whether NectarLink can see which app is in front (Settings › Usage access). */
+    /** Whether Tawam can see which app is in front (Settings › Usage access). */
     fun hasUsageAccess(context: Context): Boolean {
         val ops = context.getSystemService(AppOpsManager::class.java) ?: return false
         val mode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -100,7 +100,7 @@ object BankingPause {
         apps(context).isNotEmpty() && canChangeSettings(context) && hasUsageAccess(context)
 
     /**
-     * Turns off Developer options, USB and Wireless debugging and NectarLink's
+     * Turns off Developer options, USB and Wireless debugging and Tawam's
      * accessibility service, saving what was on first. Does nothing if
      * already paused or not allowed.
      */
