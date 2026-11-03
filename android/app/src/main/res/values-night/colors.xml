@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: GPL-3.0-or-later -->
 <resources>
-    <!-- Bloom honey, dark (docs/design/tokens.json). -->
-    <color name="surface">#17130E</color>
-    <color name="primary">#FFB95F</color>
+    <!-- Tawam teal (docs/design/tokens.json). -->
+    <color name="surface">#131617</color>
+    <color name="primary">#6BD6DC</color>
 </resources>

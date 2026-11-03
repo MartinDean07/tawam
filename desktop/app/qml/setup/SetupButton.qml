@@ -54,7 +54,7 @@ Item {
         id: label
         anchors.centerIn: parent
         text: button.text
-        font.family: "Figtree"
+        font.family: "IBM Plex Sans"
         font.pixelSize: 15
         font.weight: Font.DemiBold
         color: button.ink

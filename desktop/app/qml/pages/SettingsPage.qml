@@ -531,6 +531,7 @@ Item {
                         width: parent.width
                         ListRow {
                             width: parent.width
+                            visible: false  // Tawam has one theme
                             iconPath: Icons.palette
                             title: qsTr("Theme")
                             Segmented {
@@ -1007,7 +1008,7 @@ Item {
 
                         Divider { width: parent.width }
 
-                        // Row 2: Nectar Island | Battery alerts
+                        // Row 2: Tawam Island | Battery alerts
                         Item {
                             id: islandBatteryPairRow
                             width: parent.width
@@ -1023,10 +1024,10 @@ Item {
                                 y: islandBatteryPairRow.splitCols ? Math.round((parent.height - height) / 2) : 0
                                 width: islandBatteryPairRow.colWidth
                                 iconPath: Icons.island
-                                title: qsTr("Nectar Island")
+                                title: qsTr("Tawam Island")
                                 description: qsTr("Top-screen pill for calls, transfers & media.")
                                 Toggle {
-                                    label: qsTr("Nectar Island")
+                                    label: qsTr("Tawam Island")
                                     checked: Preferences.nectarIsland
                                     onToggled: (on) => Preferences.nectarIsland = on
                                 }
@@ -1065,7 +1066,7 @@ Item {
                             }
                         }
 
-                        // Sub-row: Granular Nectar Island triggers (Calls, Transfers, Media, Notifications)
+                        // Sub-row: Granular Tawam Island triggers (Calls, Transfers, Media, Notifications)
                         Column {
                             id: islandTriggersBlock
                             visible: Preferences.nectarIsland

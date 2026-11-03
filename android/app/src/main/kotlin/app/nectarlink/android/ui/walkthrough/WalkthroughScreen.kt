@@ -770,13 +770,20 @@ private fun DrawScope.buildHexPath(
     center: Offset,
     radius: Float,
 ) {
+    // Tawam cell: a rounded square (the twin-square mark), not a hexagon.
     path.reset()
-    for (i in 0 until 6) {
-        val angleRad = Math.toRadians((60.0 * i) - 30.0)
-        val x = center.x + (radius * cos(angleRad)).toFloat()
-        val y = center.y + (radius * sin(angleRad)).toFloat()
-        if (i == 0) path.moveTo(x, y) else path.lineTo(x, y)
-    }
+    val s = radius * 0.86f
+    val k = maxOf(2f, s * 0.32f)
+    val (cx, cy) = center.x to center.y
+    path.moveTo(cx - s + k, cy - s)
+    path.lineTo(cx + s - k, cy - s)
+    path.quadraticTo(cx + s, cy - s, cx + s, cy - s + k)
+    path.lineTo(cx + s, cy + s - k)
+    path.quadraticTo(cx + s, cy + s, cx + s - k, cy + s)
+    path.lineTo(cx - s + k, cy + s)
+    path.quadraticTo(cx - s, cy + s, cx - s, cy + s - k)
+    path.lineTo(cx - s, cy - s + k)
+    path.quadraticTo(cx - s, cy - s, cx - s + k, cy - s)
     path.close()
 }
 

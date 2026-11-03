@@ -13,26 +13,25 @@ import androidx.compose.ui.text.font.FontWeight
 
 /**
  * The fonts bundled with the app (`assets/fonts` in the repository, packaged
- * as assets under `fonts/`): Figtree for text, Instrument Serif for
- * Graphite's headings, Space Mono for codes.
+ * as assets under `fonts/`): IBM Plex Sans for text, IBM Plex Mono for codes.
  */
 @Immutable
 class AppFonts(assets: AssetManager) {
-    /** Figtree is a variable font: one file, every weight the app uses. */
+    /** IBM Plex Sans is a variable font: one file, every weight the app uses. */
     val sans = FontFamily(
         listOf(400, 500, 600, 650, 700).map { weight ->
             Font(
-                "fonts/Figtree.ttf",
+                "fonts/IBMPlexSans.ttf",
                 assets,
                 FontWeight(weight),
                 variationSettings = FontVariation.Settings(FontVariation.weight(weight)),
             )
         },
     )
-    val serif = FontFamily(Font("fonts/InstrumentSerif-Regular.ttf", assets))
+    val serif = sans
     val mono = FontFamily(
-        Font("fonts/SpaceMono-Regular.ttf", assets),
-        Font("fonts/SpaceMono-Bold.ttf", assets, FontWeight.Bold),
+        Font("fonts/IBMPlexMono-Regular.ttf", assets),
+        Font("fonts/IBMPlexMono-SemiBold.ttf", assets, FontWeight.Bold),
     )
 }
 
@@ -47,7 +46,7 @@ internal fun typography(fonts: AppFonts, graphite: Boolean): Typography {
     val base = Typography()
     fun TextStyle.text(weight: Int) = copy(fontFamily = fonts.sans, fontWeight = FontWeight(weight))
     fun TextStyle.heading() =
-        if (graphite) copy(fontFamily = fonts.serif, fontWeight = FontWeight.Normal) else text(650)
+        text(600)
     return base.copy(
         displayLarge = base.displayLarge.heading(),
         displayMedium = base.displayMedium.heading(),

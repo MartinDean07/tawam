@@ -11,9 +11,9 @@ import app.nectarlink
 QtObject {
     id: theme
 
-    readonly property bool hive: Preferences.theme === "hive"
-    readonly property bool graphite: Preferences.theme === "graphite"
-    readonly property bool glass: Preferences.theme === "glass" || Preferences.theme === "blurry"
+    readonly property bool hive: false  // Tawam has one look
+    readonly property bool graphite: false
+    readonly property bool glass: false
     readonly property bool dark: Preferences.colorMode === "dark"
                                  || (Preferences.colorMode === "system" && AppController.systemDark)
     readonly property bool amoled: dark && Preferences.amoled && (graphite || Preferences.seed === "black")
@@ -233,9 +233,9 @@ QtObject {
 
     // ---- Type ----
     // Bundled with the app (assets/fonts).
-    readonly property string fontUi: "Figtree"
-    readonly property string fontDisplay: graphite ? "Instrument Serif" : "Figtree"
-    readonly property string fontMono: "Space Mono"
+    readonly property string fontUi: "IBM Plex Sans"
+    readonly property string fontDisplay: "IBM Plex Sans"
+    readonly property string fontMono: "IBM Plex Mono"
     // Caption button glyphs: Segoe Fluent Icons ships with Windows 11 only;
     // Windows 10's Segoe MDL2 Assets has the same code points.
     readonly property string captionIconFont: Qt.fontFamilies().indexOf("Segoe Fluent Icons") >= 0

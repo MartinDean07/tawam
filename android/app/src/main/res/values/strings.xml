@@ -608,6 +608,11 @@
 
     <!-- Theme seed names -->
     <string name="settings_seed_honey">Honey</string>
+    <string name="settings_seed_teal">Teal</string>
+    <string name="settings_seed_sand">Sand</string>
+    <string name="settings_seed_indigo">Indigo</string>
+    <string name="settings_seed_olive">Olive</string>
+    <string name="settings_seed_ink">Ink</string>
     <string name="settings_seed_lavender">Lavender</string>
     <string name="settings_seed_ocean">Ocean</string>
     <string name="settings_seed_sage">Sage</string>
@@ -755,7 +760,7 @@
 
     <!-- Setup Walkthrough -->
     <string name="walkthrough_step_progress">Step %1$d of %2$d</string>
-    <string name="walkthrough_stage_desc">Honeycomb setup stage, step %1$d of %2$d</string>
+    <string name="walkthrough_stage_desc">Setup stage, step %1$d of %2$d</string>
     <string name="walkthrough_action_skip">Skip setup</string>
     <string name="walkthrough_action_back">Back</string>
     <string name="walkthrough_action_get_started">Get started</string>
@@ -1379,7 +1384,18 @@
     <string name="device_name_in_profile">%1$s (%2$s)</string>
     <string name="profile_work">Work</string>
     <string name="profile_other">Second profile</string>
+    <string name="tawam_pair_eyebrow">TAWAM · PAIRING</string>
+    <string name="tawam_pair_title">Connect your PC</string>
+    <string name="tawam_pair_confirm_title">Confirm the code</string>
+    <string name="tawam_pair_done_title">Your twin is ready</string>
+    <string name="tawam_pair_done">%1$s and this phone are now twins.</string>
+    <string name="tawam_tab_scan">Scan QR</string>
+    <string name="tawam_tab_nearby">Nearby</string>
+    <string name="tawam_step_open">Open Tawam on your PC</string>
+    <string name="tawam_step_show">Go to Pairing (it shows a QR code)</string>
+    <string name="tawam_step_point">Point this camera at the code</string>
+    <string name="tawam_connect">Connect</string>
+    <string name="tawam_compare_hint">%1$s should show exactly this code. If it does, confirm. This stops anyone else from slipping in.</string>
+    <string name="tawam_codes_same">Same code, connect</string>
+    <string name="tawam_codes_different">Different code</string>
 </resources>
-
-
-

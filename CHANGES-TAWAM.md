@@ -32,3 +32,16 @@ Unchanged, see `LICENSE`. The apps are GPL-3.0-or-later (with
 `LICENSES/APP-STORE-EXCEPTION.md`), the core libraries MPL-2.0, and the docs
 CC-BY-4.0. The full source for every Tawam release is in this repository at
 the release's tag.
+
+## 0.1.5 — own look (desktop and Android)
+
+The user interface was redesigned so Tawam no longer looks like NectarLink:
+
+- **Colours:** new palette. Deep teal by default, with Sand, Indigo, Olive and Ink accents. The honey, lavender, ocean and sage palettes are gone. Android no longer takes wallpaper colours by default.
+- **Fonts:** IBM Plex Sans, IBM Plex Sans Arabic and IBM Plex Mono (OFL-1.1) replace Figtree, Instrument Serif and Space Mono.
+- **Shapes:** tighter corner radii. Onboarding artwork uses rounded squares (the twin-square mark) instead of honeycomb hexagons.
+- **Themes:** the Hive, Glass and Graphite themes and the Hive invitation card are no longer offered. There is one Tawam theme.
+- **Pairing, rebuilt on both apps:** "QR code / Nearby" tabs, a framed QR code with corner marks, numbered steps, a countdown bar, the code shown as one `123 456` strip, and "Same code, connect / Different code" buttons.
+- **Setup window:** no honeycomb backdrop or bee mascot.
+- **Names:** "Nectar Island" is now "Tawam Island".
+- **Linux .deb:** now depends on the Qt xcb libraries (`libxcb-cursor0`, `libxkbcommon-x11-0`, …), so it starts on a clean system.

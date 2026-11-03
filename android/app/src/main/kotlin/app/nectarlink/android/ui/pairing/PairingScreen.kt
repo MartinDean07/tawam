@@ -8,6 +8,12 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -101,24 +107,37 @@ fun PairingScreen(
 
     Column(
         Modifier.fillMaxSize().safeDrawingPadding().padding(horizontal = 24.dp, vertical = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.Start,
     ) {
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(16.dp))
+        Text(
+            stringResource(R.string.tawam_pair_eyebrow),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.primary,
+            letterSpacing = 1.4.sp,
+        )
+        Spacer(Modifier.height(4.dp))
         Text(
             text = when (pairing) {
-                is PairingState.Comparing, is PairingState.Confirmed -> stringResource(R.string.pair_check_code)
-                is PairingState.Paired -> stringResource(R.string.pair_done_title)
+                is PairingState.Comparing, is PairingState.Confirmed -> stringResource(R.string.tawam_pair_confirm_title)
+                is PairingState.Paired -> stringResource(R.string.tawam_pair_done_title)
                 is PairingState.Failed -> stringResource(R.string.pair_failed_title)
                 else -> when {
                     showing -> stringResource(R.string.pair_show_title)
-                    nearby -> stringResource(R.string.pair_nearby_title)
-                    else -> stringResource(R.string.pair_title)
+                    else -> stringResource(R.string.tawam_pair_title)
                 }
             },
             style = MaterialTheme.typography.headlineMedium,
-            textAlign = TextAlign.Center,
         )
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(16.dp))
+        if (pairing == PairingState.Idle && !showing) {
+            TawamTabs(
+                selected = if (nearby) 1 else 0,
+                labels = listOf(stringResource(R.string.tawam_tab_scan), stringResource(R.string.tawam_tab_nearby)),
+                onSelect = { nearby = it == 1 },
+            )
+            Spacer(Modifier.height(16.dp))
+        }
 
         AnimatedContent(
             targetState = Triple(pairing, nearby, showing),
@@ -142,26 +161,23 @@ fun PairingScreen(
                 is PairingState.Connecting ->
                     Working(stringResource(R.string.pair_connecting, state.nameOf(current.peer) ?: ""))
                 is PairingState.Comparing -> Compare(state.nameOf(current.peer), current.code, actions::confirm)
-                is PairingState.Confirmed -> Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                is PairingState.Confirmed -> Column {
                     CodeDigits(current.code)
                     Spacer(Modifier.height(24.dp))
                     Working(stringResource(R.string.pair_waiting, state.nameOf(current.peer) ?: ""))
                 }
-                is PairingState.Paired -> Outcome(true, stringResource(R.string.pair_done, current.name))
-                is PairingState.Failed -> Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                is PairingState.Paired -> Outcome(true, stringResource(R.string.tawam_pair_done, current.name))
+                is PairingState.Failed -> Column {
                     Outcome(false, failureText(current.failure))
                     Spacer(Modifier.height(16.dp))
-                    Button(onClick = actions::reset) { Text(stringResource(R.string.action_try_again)) }
+                    Button(onClick = actions::reset, shape = MaterialTheme.shapes.medium) {
+                        Text(stringResource(R.string.action_try_again))
+                    }
                 }
             }
         }
 
         if (pairing == PairingState.Idle) {
-            if (!showing) {
-                FilledTonalButton(onClick = { nearby = !nearby }) {
-                    Text(stringResource(if (nearby) R.string.action_scan_instead else R.string.action_pair_nearby))
-                }
-            }
             TextButton(onClick = {
                 showing = !showing
                 nearby = false
@@ -172,6 +188,59 @@ fun PairingScreen(
         if (cancellable && pairing !is PairingState.Paired) {
             TextButton(onClick = { actions.reset(); onDone() }) { Text(stringResource(R.string.action_cancel)) }
         }
+    }
+}
+
+/** Two flat tabs with an accent underline under the selected one. */
+@Composable
+private fun TawamTabs(selected: Int, labels: List<String>, onSelect: (Int) -> Unit) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .clip(MaterialTheme.shapes.medium)
+            .background(MaterialTheme.colorScheme.surfaceContainer),
+    ) {
+        labels.forEachIndexed { i, label ->
+            val on = i == selected
+            Column(
+                Modifier
+                    .weight(1f)
+                    .clickable { onSelect(i) }
+                    .padding(top = 12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    label,
+                    style = MaterialTheme.typography.labelLarge,
+                    color = if (on) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Spacer(Modifier.height(10.dp))
+                Box(
+                    Modifier
+                        .fillMaxWidth(0.5f)
+                        .height(3.dp)
+                        .clip(RoundedCornerShape(topStart = 3.dp, topEnd = 3.dp))
+                        .background(if (on) MaterialTheme.colorScheme.primary else androidx.compose.ui.graphics.Color.Transparent),
+                )
+            }
+        }
+    }
+}
+
+/** Thin accent corner marks around a square area. */
+private fun Modifier.cornerMarks(color: androidx.compose.ui.graphics.Color): Modifier = drawWithContent {
+    drawContent()
+    val l = 22.dp.toPx()
+    val w = 3.dp.toPx()
+    val (W, H) = size.width to size.height
+    listOf(
+        Offset(0f, 0f) to Offset(1f, 1f),
+        Offset(W, 0f) to Offset(-1f, 1f),
+        Offset(0f, H) to Offset(1f, -1f),
+        Offset(W, H) to Offset(-1f, -1f),
+    ).forEach { (o, d) ->
+        drawLine(color, o, Offset(o.x + d.x * l, o.y), strokeWidth = w, cap = StrokeCap.Round)
+        drawLine(color, o, Offset(o.x, o.y + d.y * l), strokeWidth = w, cap = StrokeCap.Round)
     }
 }
 
@@ -240,26 +309,39 @@ private fun QrCode(text: String) {
 
 @Composable
 private fun Scan(onLink: (String) -> Unit) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Text(
-            stringResource(R.string.pair_scan_hint),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-        )
-        Spacer(Modifier.height(16.dp))
+    Column(modifier = Modifier.fillMaxSize()) {
         QrScanner(
             onLink = onLink,
             modifier = Modifier
                 .weight(1f, fill = false)
                 .fillMaxWidth()
                 .aspectRatio(1f)
-                .clip(MaterialTheme.shapes.extraLarge)
+                .cornerMarks(MaterialTheme.colorScheme.primary)
+                .padding(6.dp)
+                .clip(MaterialTheme.shapes.medium)
                 .background(MaterialTheme.colorScheme.surfaceContainerHigh),
         )
+        Spacer(Modifier.height(16.dp))
+        listOf(R.string.tawam_step_open, R.string.tawam_step_show, R.string.tawam_step_point).forEachIndexed { i, res ->
+            StepRow(i + 1, stringResource(res))
+            Spacer(Modifier.height(8.dp))
+        }
+    }
+}
+
+@Composable
+private fun StepRow(number: Int, text: String) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Box(
+            Modifier
+                .size(22.dp)
+                .border(1.5.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(4.dp)),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text("$number", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
+        }
+        Spacer(Modifier.width(10.dp))
+        Text(text, style = MaterialTheme.typography.bodyMedium)
     }
 }
 
@@ -277,13 +359,13 @@ private fun NearbyList(devices: List<DiscoveredDevice>, onPair: (String) -> Unit
         Spacer(Modifier.height(6.dp))
         if (devices.isEmpty()) {
             Surface(
-                shape = MaterialTheme.shapes.large,
-                color = MaterialTheme.colorScheme.surfaceContainer,
+                shape = MaterialTheme.shapes.medium,
+                color = androidx.compose.ui.graphics.Color.Transparent,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Row(
-                    Modifier.fillMaxWidth().padding(20.dp),
-                    horizontalArrangement = Arrangement.Center,
+                    Modifier.fillMaxWidth().padding(vertical = 12.dp),
+                    horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     if (reducedMotion) {
@@ -305,18 +387,22 @@ private fun NearbyList(devices: List<DiscoveredDevice>, onPair: (String) -> Unit
             }
         }
         devices.forEach { device ->
-            Surface(
-                shape = MaterialTheme.shapes.large,
-                color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                modifier = Modifier.fillMaxWidth(),
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.medium)
+                    .padding(horizontal = 12.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        device.name ?: stringResource(R.string.your_pc),
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.weight(1f),
-                    )
-                    Button(onClick = { onPair(device.id) }) { Text(stringResource(R.string.action_pair)) }
+                Box(Modifier.width(3.dp).height(28.dp).clip(RoundedCornerShape(2.dp)).background(MaterialTheme.colorScheme.primary))
+                Spacer(Modifier.width(12.dp))
+                Text(
+                    device.name ?: stringResource(R.string.your_pc),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.weight(1f),
+                )
+                Button(onClick = { onPair(device.id) }, shape = MaterialTheme.shapes.medium) {
+                    Text(stringResource(R.string.tawam_connect))
                 }
             }
         }
@@ -325,43 +411,42 @@ private fun NearbyList(devices: List<DiscoveredDevice>, onPair: (String) -> Unit
 
 @Composable
 private fun Compare(peerName: String?, code: String, onConfirm: (Boolean) -> Unit) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column {
         Text(
-            stringResource(R.string.pair_compare_hint, peerName ?: stringResource(R.string.your_pc)),
+            stringResource(R.string.tawam_compare_hint, peerName ?: stringResource(R.string.your_pc)),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
         )
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(20.dp))
         CodeDigits(code)
-        Spacer(Modifier.height(32.dp))
-        Button(onClick = { onConfirm(true) }, modifier = Modifier.fillMaxWidth().height(52.dp)) {
-            Text(stringResource(R.string.action_codes_match))
+        Spacer(Modifier.height(28.dp))
+        Button(onClick = { onConfirm(true) }, shape = MaterialTheme.shapes.medium, modifier = Modifier.fillMaxWidth().height(52.dp)) {
+            Text(stringResource(R.string.tawam_codes_same))
         }
         Spacer(Modifier.height(8.dp))
-        OutlinedButton(onClick = { onConfirm(false) }, modifier = Modifier.fillMaxWidth().height(52.dp)) {
-            Text(stringResource(R.string.action_codes_differ))
+        OutlinedButton(onClick = { onConfirm(false) }, shape = MaterialTheme.shapes.medium, modifier = Modifier.fillMaxWidth().height(52.dp)) {
+            Text(stringResource(R.string.tawam_codes_different))
         }
     }
 }
 
+/** The 6-digit code as one strip: "123 456". */
 @Composable
 private fun CodeDigits(code: String) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    Surface(
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.primaryContainer,
         modifier = Modifier.semantics { contentDescription = code.toList().joinToString(" ") },
     ) {
-        code.forEach { digit ->
-            Surface(
-                shape = MaterialTheme.shapes.medium,
-                color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                modifier = Modifier.size(width = 44.dp, height = 56.dp),
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Text(digit.toString(), fontFamily = LocalAppFonts.current.mono, fontSize = 26.sp, fontWeight = FontWeight.Bold)
-                }
-            }
-        }
+        Text(
+            if (code.length == 6) code.substring(0, 3) + " " + code.substring(3) else code,
+            fontFamily = LocalAppFonts.current.mono,
+            fontSize = 32.sp,
+            fontWeight = FontWeight.SemiBold,
+            letterSpacing = 4.sp,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
+        )
     }
 }
 
@@ -384,23 +469,23 @@ private fun Working(text: String) {
 
 @Composable
 private fun Outcome(success: Boolean, text: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
         Surface(
-            shape = CircleShape,
-            color = if (success) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainerHigh,
-            modifier = Modifier.size(64.dp),
+            shape = MaterialTheme.shapes.medium,
+            color = if (success) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.errorContainer,
+            modifier = Modifier.size(44.dp),
         ) {
             Box(contentAlignment = Alignment.Center) {
                 Text(
                     if (success) "✓" else "!",
-                    fontSize = 28.sp,
+                    fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
-                    color = if (success) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface,
+                    color = if (success) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onErrorContainer,
                 )
             }
         }
-        Spacer(Modifier.height(16.dp))
-        Text(text, style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)
+        Spacer(Modifier.width(14.dp))
+        Text(text, style = MaterialTheme.typography.bodyLarge)
     }
 }
 

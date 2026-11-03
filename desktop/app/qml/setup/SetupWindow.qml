@@ -15,11 +15,11 @@ NativeWindow {
     readonly property bool animate: !Setup.reduceMotion
     readonly property string phase: Setup.phase
 
-    readonly property color bg: dark ? "#121214" : "#FFF8F3"
+    readonly property color bg: dark ? "#131617" : "#F8F9FA"
     readonly property color ink: dark ? "#EDE6DD" : "#1F1B16"
     readonly property color muted: dark ? "#A39A90" : "#6B5E52"
-    readonly property color honey: dark ? "#FFB95F" : "#8A5100"
-    readonly property color onHoney: dark ? "#2C1600" : "#FFFFFF"
+    readonly property color honey: dark ? "#6BD6DC" : "#186366"
+    readonly property color onHoney: dark ? "#003739" : "#FFFFFF"
     readonly property color track: dark ? Qt.rgba(1, 1, 1, 0.08) : Qt.rgba(0.12, 0.10, 0.08, 0.08)
     readonly property color danger: dark ? "#F0A39C" : "#9E2B25"
     readonly property color panel: dark ? "#1C1B1D" : "#FFFFFF"
@@ -91,6 +91,7 @@ NativeWindow {
         Keys.onEnterPressed: if (!disclosure.open && window.phase !== "working") window.primary()
 
         HiveBackdrop {
+            visible: false
             anchors.fill: parent
             animate: window.animate
             lineColor: window.comb
@@ -177,7 +178,7 @@ NativeWindow {
                 anchors.centerIn: parent
                 width: 96
                 height: 96
-                visible: !window.removing
+                visible: true
                 source: Setup.iconUrl
                 sourceSize: Qt.size(192, 192)
                 smooth: true
@@ -187,6 +188,7 @@ NativeWindow {
                 Accessible.name: qsTr("Tawam")
             }
             SadBee {
+                opacity: 0
                 anchors.centerIn: parent
                 width: 150
                 height: 128
@@ -208,7 +210,7 @@ NativeWindow {
             Text {
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
-                font.family: "Figtree"
+                font.family: "IBM Plex Sans"
                 font.pixelSize: 28
                 font.weight: Font.DemiBold
                 color: window.ink
@@ -227,7 +229,7 @@ NativeWindow {
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.WordWrap
                 lineHeight: 1.25
-                font.family: "Figtree"
+                font.family: "IBM Plex Sans"
                 font.pixelSize: 15
                 color: window.phase === "failed" ? window.danger : window.muted
                 text: window.phase === "failed" ? Setup.message
@@ -270,7 +272,7 @@ NativeWindow {
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.WordWrap
-                font.family: "Figtree"
+                font.family: "IBM Plex Sans"
                 font.pixelSize: 13
                 color: window.danger
                 text: Setup.message
@@ -350,7 +352,7 @@ NativeWindow {
                     Text {
                         id: shortcutLabel
                         anchors.verticalCenter: parent.verticalCenter
-                        font.family: "Figtree"
+                        font.family: "IBM Plex Sans"
                         font.pixelSize: 13
                         color: window.ink
                         text: qsTr("Add a desktop shortcut")
@@ -383,7 +385,7 @@ NativeWindow {
                 Text {
                     width: Math.min(implicitWidth, main.width - (changeDir.visible ? changeDir.implicitWidth + 8 : 0))
                     elide: Text.ElideMiddle
-                    font.family: "Figtree"
+                    font.family: "IBM Plex Sans"
                     font.pixelSize: 13
                     color: window.muted
                     text: qsTr("Installs in %1").arg(Setup.installDir)
@@ -391,7 +393,7 @@ NativeWindow {
                 Text {
                     id: changeDir
                     visible: Setup.canChooseDir
-                    font.family: "Figtree"
+                    font.family: "IBM Plex Sans"
                     font.pixelSize: 13
                     font.underline: changeArea.containsMouse || activeFocus
                     color: window.honey
@@ -418,7 +420,7 @@ NativeWindow {
                 topPadding: 4
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.WordWrap
-                font.family: "Figtree"
+                font.family: "IBM Plex Sans"
                 font.pixelSize: 12
                 color: Setup.dirRefused ? window.danger : window.muted
                 text: Setup.dirNote
@@ -429,7 +431,7 @@ NativeWindow {
                 id: details
                 visible: window.phase === "welcome" && !window.removing
                 anchors.horizontalCenter: parent.horizontalCenter
-                font.family: "Figtree"
+                font.family: "IBM Plex Sans"
                 font.pixelSize: 13
                 font.underline: detailsArea.containsMouse
                 color: window.muted
@@ -462,7 +464,7 @@ NativeWindow {
             Text {
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
-                font.family: "Figtree"
+                font.family: "IBM Plex Sans"
                 font.pixelSize: 28
                 font.weight: Font.DemiBold
                 color: window.ink
@@ -474,7 +476,7 @@ NativeWindow {
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.WordWrap
                 lineHeight: 1.25
-                font.family: "Figtree"
+                font.family: "IBM Plex Sans"
                 font.pixelSize: 15
                 color: window.muted
                 text: window.removing
@@ -507,7 +509,7 @@ NativeWindow {
             Text {
                 visible: !window.removing
                 anchors.horizontalCenter: parent.horizontalCenter
-                font.family: "Figtree"
+                font.family: "IBM Plex Sans"
                 font.pixelSize: 13
                 font.underline: true
                 color: window.honey
@@ -574,7 +576,7 @@ NativeWindow {
                     anchors.margins: 32
                     spacing: 12
                     Text {
-                        font.family: "Figtree"
+                        font.family: "IBM Plex Sans"
                         font.pixelSize: 18
                         font.weight: Font.DemiBold
                         color: window.ink
@@ -584,7 +586,7 @@ NativeWindow {
                         width: parent.width
                         wrapMode: Text.WordWrap
                         lineHeight: 1.3
-                        font.family: "Figtree"
+                        font.family: "IBM Plex Sans"
                         font.pixelSize: 14
                         color: window.muted
                         textFormat: Text.StyledText
@@ -596,7 +598,7 @@ NativeWindow {
                             + "<br><br>" + qsTr("It checks GitHub for updates once a day, which you can turn off in Settings. Otherwise your phone and PC only talk to each other.")
                     }
                     Text {
-                        font.family: "Figtree"
+                        font.family: "IBM Plex Sans"
                         font.pixelSize: 14
                         font.underline: true
                         color: window.honey

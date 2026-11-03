@@ -125,7 +125,7 @@ impl cxx_qt::Initialize for qobject::Setup {
         self.as_mut().set_reduce_motion(crate::win::reduce_motion());
         self.as_mut().set_phase(QString::from("welcome"));
         self.as_mut().set_icon_url(QString::from(&setup::icon_url(192)));
-        self.as_mut().set_qr_url(QString::from(&setup::android_qr("#2C1600", "#FFFFFF")));
+        self.as_mut().set_qr_url(QString::from(&setup::android_qr("#0E3B43", "#FFFFFF")));
         self.as_mut().set_android_url(QString::from(setup::ANDROID_URL));
         match mode() {
             Some(Mode::Remove { installed }) => {

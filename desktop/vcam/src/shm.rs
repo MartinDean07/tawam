@@ -763,7 +763,7 @@ pub fn bgrx_to_nv12(bgrx: &[u8], width: u32, height: u32, nv12: &mut [u8]) {
     }
 }
 
-const FIGTREE_TTF: &[u8] = include_bytes!("../../../assets/fonts/Figtree.ttf");
+const FIGTREE_TTF: &[u8] = include_bytes!("../../../assets/fonts/IBMPlexSans.ttf");
 
 /// Honey primary (`docs/design/tokens.json`) and white ink for the Tawam mark.
 const MARK_BG_BGR: [u8; 3] = [0x00, 0x51, 0x8A];

@@ -77,7 +77,7 @@ const QML_SINGLETONS: &[&str] = &["qml/Tokens.qml", "qml/Theme.qml", "qml/Icons.
 
 /// Bundled fonts (in `assets/fonts`), compiled in under `:/fonts/`.
 const FONTS: &[&str] =
-    &["Figtree.ttf", "InstrumentSerif-Regular.ttf", "SpaceMono-Regular.ttf", "SpaceMono-Bold.ttf"];
+    &["IBMPlexSans.ttf", "IBMPlexMono-Regular.ttf", "IBMPlexMono-SemiBold.ttf", "IBMPlexSansArabic-Regular.ttf", "IBMPlexSansArabic-SemiBold.ttf"];
 
 fn write_if_changed(path: &Path, content: impl AsRef<[u8]>) {
     let bytes = content.as_ref();

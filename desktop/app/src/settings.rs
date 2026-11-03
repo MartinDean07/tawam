@@ -547,7 +547,7 @@ impl Default for Settings {
     fn default() -> Self {
         Settings {
             theme: Theme::default(),
-            seed: "wallpaper".into(),
+            seed: "teal".into(),
             color_mode: ColorMode::default(),
             amoled: false,
             backdrop: true,

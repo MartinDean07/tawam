@@ -243,16 +243,6 @@ fun SettingsScreen(
         if (showAppearance) {
             item(key = "appearance", contentType = "section") {
                 Section(stringResource(R.string.settings_appearance)) {
-                    Label(stringResource(R.string.settings_theme))
-                    Choice(
-                        listOf(
-                            "hive" to stringResource(R.string.theme_hive),
-                            "bloom" to stringResource(R.string.theme_bloom),
-                            "glass" to "Glass",
-                            "graphite" to stringResource(R.string.theme_graphite),
-                        ),
-                        appearance.theme,
-                    ) { value -> onAppearance { it.copy(theme = value) } }
                     Label(stringResource(R.string.settings_mode))
                     Choice(
                         listOf(
@@ -377,12 +367,12 @@ fun SettingsScreen(
                                     val isSelected = (!appearance.dynamicColor || Build.VERSION.SDK_INT < Build.VERSION_CODES.S) && appearance.seed == name
                                     val seedLabel = stringResource(
                                         when (name) {
-                                            "honey" -> R.string.settings_seed_honey
-                                            "lavender" -> R.string.settings_seed_lavender
-                                            "ocean" -> R.string.settings_seed_ocean
-                                            "sage" -> R.string.settings_seed_sage
-                                            "black" -> R.string.settings_seed_black
-                                            else -> R.string.settings_seed_honey
+                                            "teal" -> R.string.settings_seed_teal
+                                            "sand" -> R.string.settings_seed_sand
+                                            "indigo" -> R.string.settings_seed_indigo
+                                            "olive" -> R.string.settings_seed_olive
+                                            "ink" -> R.string.settings_seed_ink
+                                            else -> R.string.settings_seed_teal
                                         },
                                     )
                                     val isBlackSeed = name == "black"

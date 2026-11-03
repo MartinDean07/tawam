@@ -176,7 +176,7 @@ Section: net
 Priority: optional
 Architecture: ${DEB_ARCH}
 Installed-Size: ${INSTALLED_SIZE}
-Depends: libc6, libgcc-s1, libstdc++6, libgl1, libx11-6, libxcb1, libxkbcommon0, libwayland-client0, libfontconfig1, libfreetype6, libdbus-1-3, libegl1, libglib2.0-0t64 | libglib2.0-0, libgssapi-krb5-2${QT_DEPENDS}
+Depends: libc6, libgcc-s1, libstdc++6, libgl1, libx11-6, libxcb1, libxkbcommon0, libwayland-client0, libfontconfig1, libfreetype6, libdbus-1-3, libegl1, libglib2.0-0t64 | libglib2.0-0, libgssapi-krb5-2, libxcb-cursor0, libxkbcommon-x11-0, libxcb-icccm4, libxcb-keysyms1, libxcb-xkb1, libxcb-randr0, libxcb-shape0, libxcb-render-util0, libxcb-image0${QT_DEPENDS}
 Recommends: fuse3, curl | wget, ffmpeg, gstreamer1.0-tools, gstreamer1.0-pipewire, gstreamer1.0-plugins-base, libopenh264-8 | libopenh264-7 | libopenh264-6 | libavcodec62 | libavcodec61 | libavcodec60, pipewire-bin | pulseaudio-utils, pipewire, wl-clipboard, xclip, xdg-utils, avahi-daemon, bluez, v4l2loopback-dkms, policykit-1 | pkexec
 Maintainer: Martin Dean <https://github.com/MartinDean07/tawam>
 Homepage: https://github.com/MartinDean07/tawam

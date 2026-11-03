@@ -65,11 +65,11 @@ fun rememberReducedMotion(): Boolean {
 /** The user's look choices (see Preferences). */
 @androidx.compose.runtime.Immutable
 data class Appearance(
-    val theme: String = "graphite",
+    val theme: String = "bloom",
     val mode: String = "system",
     val seed: String = Tokens.DEFAULT_SEED,
     /** Bloom/Glass takes its colors from the wallpaper (Android 12+). */
-    val dynamicColor: Boolean = true,
+    val dynamicColor: Boolean = false,  // Tawam teal by default, not wallpaper colours
     /** True #000000 OLED black surfaces when in dark mode. */
     val amoled: Boolean = false,
     /** Hive's comb breathes and pulses (still with reduced motion or battery saver). */
@@ -349,11 +349,11 @@ private fun shapes(graphite: Boolean, glass: Boolean, hive: Boolean) = when {
         extraLarge = RoundedCornerShape(30.dp),
     )
     else -> Shapes(
-        extraSmall = RoundedCornerShape(8.dp),
-        small = RoundedCornerShape(12.dp),
-        medium = RoundedCornerShape(16.dp),
-        large = RoundedCornerShape(20.dp),
-        extraLarge = RoundedCornerShape(28.dp),
+        extraSmall = RoundedCornerShape(4.dp),
+        small = RoundedCornerShape(6.dp),
+        medium = RoundedCornerShape(10.dp),
+        large = RoundedCornerShape(14.dp),
+        extraLarge = RoundedCornerShape(18.dp),
     )
 }
 
@@ -393,10 +393,11 @@ fun NectarlinkTheme(
         "dark" -> true
         else -> isSystemInDarkTheme()
     }
-    val graphite = appearance.theme == "graphite"
-    val glass = appearance.theme == "glass"
+    // Tawam has one look: the retired NectarLink themes are never applied.
+    val graphite = false
+    val glass = false
     // Hive keeps its own honey: no wallpaper, artwork or phone colors.
-    val hive = appearance.theme == "hive"
+    val hive = false
     val isBlackSwatch = !appearance.dynamicColor && appearance.seed == "black"
     val amoledActive = dark && appearance.amoled && (graphite || isBlackSwatch)
     val error = when {

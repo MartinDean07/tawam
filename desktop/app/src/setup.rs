@@ -799,7 +799,7 @@ mod tests {
 
     #[test]
     fn qr_is_an_svg_data_url() {
-        let url = android_qr("#2C1600", "#FFFFFF");
+        let url = android_qr("#0E3B43", "#FFFFFF");
         assert!(url.starts_with("data:image/svg+xml;utf8,<svg"));
         assert!(url.contains("%232C1600"));
     }

@@ -366,17 +366,20 @@ FocusScope {
                         implicitWidth: 640
                         implicitHeight: 148
 
+                        // Tawam cell: a rounded square (the twin-square mark), not a hexagon.
                         function drawHex(ctx, cx, cy, r) {
+                            let s = r * 0.86
+                            let k = Math.max(2, s * 0.32)
                             ctx.beginPath()
-                            for (let i = 0; i < 6; i++) {
-                                let angle = (Math.PI / 3) * i - Math.PI / 6
-                                let px = cx + r * Math.cos(angle)
-                                let py = cy + r * Math.sin(angle)
-                                if (i === 0)
-                                    ctx.moveTo(px, py)
-                                else
-                                    ctx.lineTo(px, py)
-                            }
+                            ctx.moveTo(cx - s + k, cy - s)
+                            ctx.lineTo(cx + s - k, cy - s)
+                            ctx.quadraticCurveTo(cx + s, cy - s, cx + s, cy - s + k)
+                            ctx.lineTo(cx + s, cy + s - k)
+                            ctx.quadraticCurveTo(cx + s, cy + s, cx + s - k, cy + s)
+                            ctx.lineTo(cx - s + k, cy + s)
+                            ctx.quadraticCurveTo(cx - s, cy + s, cx - s, cy + s - k)
+                            ctx.lineTo(cx - s, cy - s + k)
+                            ctx.quadraticCurveTo(cx - s, cy - s, cx - s + k, cy - s)
                             ctx.closePath()
                         }
 

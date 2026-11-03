@@ -2478,39 +2478,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "tawam-desktop"
-version = "0.1.4"
-dependencies = [
- "anyhow",
- "blake3",
- "cc",
- "cxx",
- "cxx-qt",
- "cxx-qt-build",
- "cxx-qt-lib",
- "data-encoding",
- "dirs",
- "embed-resource",
- "hostname",
- "libc",
- "material-colors",
- "nectarlink-core",
- "nectarlink-vcam",
- "pkg-config",
- "qrcode",
- "serde",
- "serde_json",
- "sha2",
- "tempfile",
- "tokio",
- "tracing",
- "tracing-subscriber",
- "windows",
- "windows-core",
- "zbus",
-]
-
-[[package]]
 name = "nectarlink-ffi"
 version = "0.1.4"
 dependencies = [
@@ -4011,6 +3978,39 @@ checksum = "8e1d1b10ced5ca923a1fcb8d03e96b8d3268065d724548c0211415ff6ac6bac4"
 dependencies = [
  "core-foundation-sys",
  "libc",
+]
+
+[[package]]
+name = "tawam-desktop"
+version = "0.1.4"
+dependencies = [
+ "anyhow",
+ "blake3",
+ "cc",
+ "cxx",
+ "cxx-qt",
+ "cxx-qt-build",
+ "cxx-qt-lib",
+ "data-encoding",
+ "dirs",
+ "embed-resource",
+ "hostname",
+ "libc",
+ "material-colors",
+ "nectarlink-core",
+ "nectarlink-vcam",
+ "pkg-config",
+ "qrcode",
+ "serde",
+ "serde_json",
+ "sha2",
+ "tempfile",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+ "windows",
+ "windows-core",
+ "zbus",
 ]
 
 [[package]]

@@ -316,8 +316,7 @@ Item {
             Card {
                 id: hiveInvite
                 width: column.width
-                visible: Preferences.walkthroughCompleted && Preferences.whatsNewDismissed
-                         && !Preferences.hiveInviteDismissed && !Theme.hive
+                visible: false  // no theme invitation in Tawam
                 padding: 14
                 Binding {
                     target: Theme
