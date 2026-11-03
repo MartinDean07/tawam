@@ -106,7 +106,8 @@ pub fn set_auto_install(on: bool) {
 /// Whether this copy updates itself (an installed one, not a build run
 /// from its folder).
 pub fn can_update() -> bool {
-    std::env::current_exe().is_ok_and(|exe| autostart::is_installed(&exe))
+    cfg!(feature = "self-update")
+        && std::env::current_exe().is_ok_and(|exe| autostart::is_installed(&exe))
 }
 
 /// Checks soon after startup, then daily, while automatic checks are on.
@@ -149,6 +150,9 @@ pub fn start() {
 /// Checks now (blocking). `told`: the user asked, so say "up to date" too.
 /// Returns what to tell the user.
 pub fn check_now(told: bool) -> Option<String> {
+    if !cfg!(feature = "self-update") {
+        return told.then(|| "Automatic updates are disabled in this build. Update by rebuilding from source.".to_owned());
+    }
     if CHECKING.swap(true, Ordering::AcqRel) {
         return None;
     }
@@ -437,6 +441,9 @@ fn task_registered() -> bool {
 /// Blocking. Returns what went wrong, in words for the user. On success the
 /// app is about to quit for the installer.
 pub fn install(progress: impl FnMut(u64, u64)) -> Result<(), String> {
+    if !cfg!(feature = "self-update") {
+        return Err("Automatic updates are disabled in this build.".to_owned());
+    }
     let update = available().ok_or("There's no update to install.")?;
     let staged = stage(&update, progress).map_err(|e| {
         tracing::warn!(error = %e, "update download failed");

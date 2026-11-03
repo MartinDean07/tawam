@@ -70,6 +70,11 @@ pub const LOCALSEND_MULTICAST_ADDR: Ipv4Addr = Ipv4Addr::new(224, 0, 0, 167);
 pub const LOCALSEND_PROTOCOL_VERSION: &str = "2.1";
 
 const STATE_FILE: &str = "localsend.enc";
+/// LocalSend's plain-HTTP mode sends files unencrypted and unauthenticated.
+/// This build refuses it in both directions: only HTTPS peers, whose
+/// certificate must match the fingerprint they announce.
+const PLAINTEXT_ALLOWED: bool = false;
+
 const APPROVAL_TIMEOUT: Duration = Duration::from_secs(60);
 const CONNECT_TIMEOUT: Duration = Duration::from_secs(6);
 const IO_TIMEOUT: Duration = Duration::from_secs(30);
@@ -703,6 +708,10 @@ async fn handle_udp_packet(shared: &Arc<Shared>, data: &[u8], src: SocketAddr) {
         IpAddr::V6(v6) => v6.to_string(),
     };
     let port = if dto.port == 0 { LOCALSEND_DEFAULT_PORT } else { dto.port };
+    if !PLAINTEXT_ALLOWED && dto.protocol.eq_ignore_ascii_case("http") {
+        tracing::debug!(%ip, "ignoring LocalSend peer that only speaks plain HTTP");
+        return;
+    }
     let protocol =
         if dto.protocol.eq_ignore_ascii_case("http") { "http".to_owned() } else { "https".to_owned() };
     let peer = LocalSendPeer {
@@ -737,7 +746,8 @@ async fn send_register_callback(
     let our_port = shared.localsend.bound_port();
     let dto = build_our_multicast_dto(shared, our_port, false);
     let body = serde_json::to_vec(&dto).map_err(|e| Error::Internal(e.to_string()))?;
-    let mut stream = connect_peer_stream(shared, ip, port, protocol == "https", Some(fingerprint)).await?;
+    let mut stream =
+        connect_peer_stream(shared, ip, port, !PLAINTEXT_ALLOWED || protocol == "https", Some(fingerprint)).await?;
     write_http_request(
         &mut stream,
         "POST",
@@ -779,7 +789,7 @@ async fn send_register_callback(
 /// Probes `host:port` over HTTPS (falling back to HTTP) via `GET /api/localsend/v2/info`
 /// (and `POST /api/localsend/v2/register` if we are receiving) and records the peer if found.
 pub(crate) async fn probe_peer(shared: &Arc<Shared>, host: &str, port: u16) -> Result<LocalSendPeer> {
-    for use_tls in [true, false] {
+    for use_tls in [true, false].into_iter().filter(|tls| *tls || PLAINTEXT_ALLOWED) {
         let protocol = if use_tls { "https" } else { "http" };
         let Ok(mut stream) = connect_peer_stream(shared, host, port, use_tls, None).await else {
             continue;
@@ -921,8 +931,11 @@ async fn handle_incoming_connection(
             return;
         };
         ServerStream::Tls(Box::new(tls))
-    } else {
+    } else if PLAINTEXT_ALLOWED {
         ServerStream::Plain(tcp)
+    } else {
+        tracing::debug!(%remote_addr, "refusing plain-HTTP LocalSend connection");
+        return;
     };
 
     let Ok(head) = read_http_head(&mut stream).await else { return };
@@ -942,6 +955,7 @@ async fn handle_incoming_connection(
             if let Ok(dto) = serde_json::from_slice::<MulticastDto>(&body)
                 && dto.fingerprint != shared.localsend.identity.fingerprint
                 && !dto.alias.trim().is_empty()
+                && (PLAINTEXT_ALLOWED || !dto.protocol.eq_ignore_ascii_case("http"))
             {
                 let ip = remote_addr.ip().to_string();
                 let port = if dto.port == 0 { LOCALSEND_DEFAULT_PORT } else { dto.port };
@@ -1518,7 +1532,7 @@ async fn run_outgoing_transfer(
     initial_transfer: &Transfer,
     cancel: &CancellationToken,
 ) -> std::result::Result<(), TransferState> {
-    let use_tls = !peer.protocol.eq_ignore_ascii_case("http");
+    let use_tls = !PLAINTEXT_ALLOWED || !peer.protocol.eq_ignore_ascii_case("http");
     let mut files_map = HashMap::with_capacity(files.len());
     for f in &files {
         files_map.insert(

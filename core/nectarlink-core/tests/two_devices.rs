@@ -4959,7 +4959,50 @@ async fn localsend_discovers_peer_requires_accept_and_transfers_files_over_https
 /// sender would send it; returns the status and the body.
 async fn localsend_request(port: u16, method: &str, target: &str, body: &[u8]) -> (u16, Vec<u8>) {
     use tokio::io::{AsyncReadExt, AsyncWriteExt};
-    let mut tcp = tokio::net::TcpStream::connect(("127.0.0.1", port)).await.unwrap();
+    // This build refuses plain HTTP, so speak HTTPS like a LocalSend sender does.
+    #[derive(Debug)]
+    struct AnyCert(std::sync::Arc<rustls::crypto::CryptoProvider>);
+    impl rustls::client::danger::ServerCertVerifier for AnyCert {
+        fn verify_server_cert(
+            &self,
+            _: &rustls::pki_types::CertificateDer<'_>,
+            _: &[rustls::pki_types::CertificateDer<'_>],
+            _: &rustls::pki_types::ServerName<'_>,
+            _: &[u8],
+            _: rustls::pki_types::UnixTime,
+        ) -> Result<rustls::client::danger::ServerCertVerified, rustls::Error> {
+            Ok(rustls::client::danger::ServerCertVerified::assertion())
+        }
+        fn verify_tls12_signature(
+            &self,
+            m: &[u8],
+            c: &rustls::pki_types::CertificateDer<'_>,
+            d: &rustls::DigitallySignedStruct,
+        ) -> Result<rustls::client::danger::HandshakeSignatureValid, rustls::Error> {
+            rustls::crypto::verify_tls12_signature(m, c, d, &self.0.signature_verification_algorithms)
+        }
+        fn verify_tls13_signature(
+            &self,
+            m: &[u8],
+            c: &rustls::pki_types::CertificateDer<'_>,
+            d: &rustls::DigitallySignedStruct,
+        ) -> Result<rustls::client::danger::HandshakeSignatureValid, rustls::Error> {
+            rustls::crypto::verify_tls13_signature(m, c, d, &self.0.signature_verification_algorithms)
+        }
+        fn supported_verify_schemes(&self) -> Vec<rustls::SignatureScheme> {
+            self.0.signature_verification_algorithms.supported_schemes()
+        }
+    }
+    let provider = std::sync::Arc::new(rustls::crypto::ring::default_provider());
+    let config = rustls::ClientConfig::builder_with_provider(provider.clone())
+        .with_safe_default_protocol_versions()
+        .unwrap()
+        .dangerous()
+        .with_custom_certificate_verifier(std::sync::Arc::new(AnyCert(provider)))
+        .with_no_client_auth();
+    let raw = tokio::net::TcpStream::connect(("127.0.0.1", port)).await.unwrap();
+    let name = rustls::pki_types::ServerName::try_from("localsend.org").unwrap();
+    let mut tcp = tokio_rustls::TlsConnector::from(std::sync::Arc::new(config)).connect(name, raw).await.unwrap();
     let head = format!(
         "{method} {target} HTTP/1.1\r\nHost: 127.0.0.1:{port}\r\nContent-Type: application/json\r\n\
          Content-Length: {}\r\nConnection: close\r\n\r\n",
@@ -4973,6 +5016,16 @@ async fn localsend_request(port: u16, method: &str, target: &str, body: &[u8]) -
     let status = text.split(' ').nth(1).and_then(|c| c.parse().ok()).unwrap_or(0);
     let split = out.windows(4).position(|w| w == b"\r\n\r\n").map_or(out.len(), |i| i + 4);
     (status, out[split..].to_vec())
+}
+
+/// Plain HTTP to the LocalSend server gets no answer in this build.
+async fn localsend_plain_http_gets_no_answer(port: u16) -> bool {
+    use tokio::io::{AsyncReadExt, AsyncWriteExt};
+    let mut tcp = tokio::net::TcpStream::connect(("127.0.0.1", port)).await.unwrap();
+    let _ = tcp.write_all(b"GET /api/localsend/v2/info HTTP/1.1\r\nHost: x\r\nConnection: close\r\n\r\n").await;
+    let mut out = Vec::new();
+    let _ = tokio::time::timeout(std::time::Duration::from_secs(10), tcp.read_to_end(&mut out)).await;
+    out.is_empty()
 }
 
 fn localsend_offer(files: &[(&str, &str, &str, u64)]) -> Vec<u8> {
@@ -5021,6 +5074,7 @@ async fn localsend_refuses_duplicate_ids_and_records_a_cancelled_partial_deliver
         tokio::time::sleep(Duration::from_millis(50)).await;
     }
     assert!(receiver.node.localsend_receiving());
+    assert!(localsend_plain_http_gets_no_answer(port).await, "plain HTTP must be refused");
 
     let (status, _) = localsend_request(
         port,

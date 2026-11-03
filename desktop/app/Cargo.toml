@@ -10,6 +10,12 @@ repository.workspace = true
 license = "GPL-3.0-or-later"
 publish = false
 
+[features]
+# Downloads and installs releases from GitHub as root/admin, trusting only a
+# SHA-256 list from the same release (no signature). Off unless built with
+# `--features self-update`.
+self-update = []
+
 [[bin]]
 name = "nectarlink-desktop"
 path = "src/main.rs"
