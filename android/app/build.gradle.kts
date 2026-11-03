@@ -25,6 +25,8 @@ android {
         targetSdk = 37
         versionCode = appVersionCode
         versionName = appVersion
+        // Self-updater from GitHub releases: off unless built with -Pself.update=true.
+        buildConfigField("boolean", "SELF_UPDATE", (project.findProperty("self.update") == "true").toString())
     }
 
     // Only the languages the app offers (res/xml/locales_config.xml) go into the APK: a

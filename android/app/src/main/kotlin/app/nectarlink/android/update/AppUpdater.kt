@@ -90,7 +90,10 @@ class AppUpdater(context: Context) {
     val state: StateFlow<State> = _state.asStateFlow()
 
     /** Whether this build updates itself. */
-    val enabled: Boolean get() = !BuildConfig.DEBUG
+    // Off in this fork: the official updater trusts only a SHA-256 list from the same
+    // GitHub release (no signature) and would replace this build with upstream's.
+    // Android's own APK signature check still guards manual updates.
+    val enabled: Boolean get() = BuildConfig.SELF_UPDATE && !BuildConfig.DEBUG
 
     private val _autoInstall = MutableStateFlow(prefs.getBoolean(AUTO_INSTALL, true))
 
