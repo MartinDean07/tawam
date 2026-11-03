@@ -261,7 +261,7 @@ fn detect_linux_install_kind() -> LinuxInstallKind {
     if let Ok(exe) = std::env::current_exe() {
         let resolved = std::fs::canonicalize(&exe).unwrap_or(exe);
         if resolved.starts_with("/opt/tawam")
-            || resolved.parent().and_then(|p| p.file_name()).is_some_and(|n| n == "nectarlink-app")
+            || resolved.parent().and_then(|p| p.file_name()).is_some_and(|n| n == "tawam-app")
         {
             return LinuxInstallKind::Tarball;
         }
@@ -1212,7 +1212,7 @@ mod tests {
                         "https://github.com/MartinDean07/tawam/releases/download/v9/appimage-x64".into(),
                 },
                 Asset {
-                    name: "nectarlink_9.0.0_amd64.deb".into(),
+                    name: "tawam_9.0.0_amd64.deb".into(),
                     browser_download_url:
                         "https://github.com/MartinDean07/tawam/releases/download/v9/deb-amd64".into(),
                 },
@@ -1329,7 +1329,7 @@ mod tests {
         assert_eq!(
             (deb.installer_name.as_str(), deb.installer_url.as_str()),
             (
-                "nectarlink_9.0.0_amd64.deb",
+                "tawam_9.0.0_amd64.deb",
                 "https://github.com/MartinDean07/tawam/releases/download/v9/deb-amd64"
             )
         );

@@ -153,7 +153,7 @@ if [[ "${EUID:-$(id -u)}" -eq 0 ]]; then
     ICON_DIR="/usr/share/icons/hicolor/scalable/apps"
     PNG_ICON_DIR="/usr/share/icons/hicolor/512x512/apps"
 else
-    PREFIX="${XDG_DATA_HOME:-$HOME/.local/share}/nectarlink-app"
+    PREFIX="${XDG_DATA_HOME:-$HOME/.local/share}/tawam-app"
     BIN_LINK="${HOME}/.local/bin/tawam-desktop"
     APPS_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/applications"
     META_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/metainfo"
@@ -216,7 +216,7 @@ if [[ "${EUID:-$(id -u)}" -eq 0 ]]; then
     rm -f /usr/share/icons/hicolor/scalable/apps/tawam.svg
     rm -f /usr/share/icons/hicolor/512x512/apps/tawam.png
 else
-    PREFIX="${XDG_DATA_HOME:-$HOME/.local/share}/nectarlink-app"
+    PREFIX="${XDG_DATA_HOME:-$HOME/.local/share}/tawam-app"
     rm -rf "${PREFIX}"
     rm -f "${HOME}/.local/bin/tawam-desktop"
     rm -f "${XDG_DATA_HOME:-$HOME/.local/share}/applications/tawam.desktop"

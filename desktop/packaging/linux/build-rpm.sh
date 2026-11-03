@@ -24,7 +24,7 @@ case "${ARCH}" in
 esac
 
 OUT_DIR="${OUT_DIR:-${REPO_ROOT}/dist}"
-DEB="${DEB:-${OUT_DIR}/nectarlink_${VERSION}_${DEB_ARCH}.deb}"
+DEB="${DEB:-${OUT_DIR}/tawam_${VERSION}_${DEB_ARCH}.deb}"
 if [[ ! -f "${DEB}" ]]; then
     echo "error: ${DEB} not found; run build-deb.sh first" >&2
     exit 1

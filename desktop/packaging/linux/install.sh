@@ -32,8 +32,8 @@ MDNS_PORT=5353
 LOCALSEND_PORT=53317
 MIN_GLIBC="2.39"
 WEBCAM_NAME="Tawam Webcam"
-VCAM_MODULES_CONF="/etc/modules-load.d/nectarlink-vcam.conf"
-VCAM_MODPROBE_CONF="/etc/modprobe.d/nectarlink-vcam.conf"
+VCAM_MODULES_CONF="/etc/modules-load.d/tawam-vcam.conf"
+VCAM_MODPROBE_CONF="/etc/modprobe.d/tawam-vcam.conf"
 UINPUT_RULE="/etc/udev/rules.d/70-tawam-uinput.rules"
 UINPUT_MODULES_CONF="/etc/modules-load.d/tawam-uinput.conf"
 PRIVATE_NETS="192.168.0.0/16 10.0.0.0/8 172.16.0.0/12"
@@ -264,7 +264,7 @@ find_release() {
     [ -n "$VERSION" ] || fail "couldn't tell which version is the latest."
     BASE_URL="https://github.com/$REPO/releases/download/v$VERSION"
     case "$PACKAGE" in
-        deb) ASSET="nectarlink_${VERSION}_${DEB_ARCH}.deb" ;;
+        deb) ASSET="tawam_${VERSION}_${DEB_ARCH}.deb" ;;
         rpm) ASSET="tawam-${VERSION}-1.${ARCH}.rpm" ;;
         tarball) ASSET="Tawam-${VERSION}-linux-${ARCH}.tar.gz" ;;
     esac
@@ -508,8 +508,8 @@ uninstall() {
             /usr/share/icons/hicolor/512x512/apps/tawam.png && removed=1
     fi
     user_share="${XDG_DATA_HOME:-$TARGET_HOME/.local/share}"
-    if [ -d "$user_share/nectarlink-app" ]; then
-        run rm -rf "$user_share/nectarlink-app" "$TARGET_HOME/.local/bin/tawam-desktop" \
+    if [ -d "$user_share/tawam-app" ]; then
+        run rm -rf "$user_share/tawam-app" "$TARGET_HOME/.local/bin/tawam-desktop" \
             "$user_share/metainfo/no.martindean.tawam.desktop.metainfo.xml" && removed=1
     fi
     # The menu entry and icon the app keeps for itself, and starting with the computer.

@@ -133,13 +133,13 @@ pub fn is_installed_location(exe: &Path) -> bool {
     }
     exe.starts_with("/usr")
         || exe.starts_with("/opt")
-        || s.contains("/.local/share/nectarlink-app/")
+        || s.contains("/.local/share/tawam-app/")
         || s.contains("/.local/bin/")
         || dirs::data_local_dir()
-            .is_some_and(|d| exe.starts_with(&d) || exe.starts_with(d.join("nectarlink-app")))
+            .is_some_and(|d| exe.starts_with(&d) || exe.starts_with(d.join("tawam-app")))
         || dirs::executable_dir().is_some_and(|d| exe.starts_with(d))
         || dirs::home_dir().is_some_and(|h| {
-            exe.starts_with(h.join(".local/share/nectarlink-app"))
+            exe.starts_with(h.join(".local/share/tawam-app"))
                 || exe.starts_with(h.join(".local/bin"))
                 || exe.starts_with(h.join(".local/share"))
         })
@@ -179,7 +179,7 @@ mod tests {
         assert!(is_installed(Path::new("/usr/local/bin/tawam-desktop")));
         assert!(is_installed(Path::new("/opt/tawam/tawam-desktop")));
         assert!(is_installed_location(Path::new(
-            "/home/user/.local/share/nectarlink-app/tawam-desktop"
+            "/home/user/.local/share/tawam-app/tawam-desktop"
         )));
         assert!(is_installed_location(Path::new("/home/user/.local/bin/tawam-desktop")));
         assert!(!is_installed(Path::new("/home/user/repo/target/debug/tawam-desktop")));

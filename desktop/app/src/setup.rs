@@ -81,7 +81,7 @@ pub fn installed() -> Option<Installed> {
         }
     }
     if let Some(local_data) = dirs::data_local_dir() {
-        let user_dir = local_data.join("nectarlink-app");
+        let user_dir = local_data.join("tawam-app");
         let exe = user_dir.join(APP_EXE);
         if exe.is_file() {
             let version = read_installed_version(&user_dir, &exe).unwrap_or_default();
@@ -394,7 +394,7 @@ pub fn remove(installed: &Path, mut on_event: impl FnMut(Event)) -> Outcome {
 
     on_event(Event::Step(Step::Cleanup));
     if let Some(local_data) = dirs::data_local_dir() {
-        let user_app_dir = local_data.join("nectarlink-app");
+        let user_app_dir = local_data.join("tawam-app");
         if installed == user_app_dir {
             let _ = std::fs::remove_dir_all(&user_app_dir);
             if let Some(home) = dirs::home_dir() {

@@ -70,7 +70,7 @@ check home-folder docker.io/library/ubuntu:24.04 '
     ! test -e /home/user/.local/bin/tawam-desktop'
 check bad-checksum docker.io/library/ubuntu:24.04 '
     mkdir /tampered && cp /dist/* /tampered/
-    echo tampered >> /tampered/nectarlink_9.9.9_amd64.deb
+    echo tampered >> /tampered/tawam_9.9.9_amd64.deb
     ! NECTARLINK_ASSETS_DIR=/tampered sh /tampered/install.sh
     ! command -v tawam-desktop'
 echo "All install.sh checks passed."

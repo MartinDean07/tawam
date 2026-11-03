@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Builds a Debian/Ubuntu .deb package for Tawam Desktop:
-#   dist/nectarlink_<version>_<arch>.deb
+#   dist/tawam_<version>_<arch>.deb
 
 set -euo pipefail
 
@@ -41,7 +41,7 @@ fi
 STAGE_DIR="$(mktemp -d -t tawam-deb-XXXXXX)"
 trap 'rm -rf "${STAGE_DIR}"' EXIT
 
-PKG_ROOT="${STAGE_DIR}/nectarlink_${VERSION}_${DEB_ARCH}"
+PKG_ROOT="${STAGE_DIR}/tawam_${VERSION}_${DEB_ARCH}"
 mkdir -p \
     "${PKG_ROOT}/DEBIAN" \
     "${PKG_ROOT}/usr/bin" \
@@ -214,7 +214,7 @@ chmod 0755 "${PKG_ROOT}/DEBIAN/postrm"
 
 OUT_DIR="${OUT_DIR:-${REPO_ROOT}/dist}"
 mkdir -p "${OUT_DIR}"
-OUT_DEB="${OUT_DIR}/nectarlink_${VERSION}_${DEB_ARCH}.deb"
+OUT_DEB="${OUT_DIR}/tawam_${VERSION}_${DEB_ARCH}.deb"
 
 dpkg-deb --root-owner-group --build "${PKG_ROOT}" "${OUT_DEB}"
 echo "Built ${OUT_DEB}"

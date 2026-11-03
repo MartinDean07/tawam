@@ -23,8 +23,8 @@ pub const FRIENDLY_NAME: &str = "Tawam Webcam";
 pub const REGISTER_ARG: &str = "--register-vcam";
 pub const UNREGISTER_ARG: &str = "--unregister-vcam";
 
-const MODULES_LOAD_CONF: &str = "/etc/modules-load.d/nectarlink-vcam.conf";
-const MODPROBE_CONF: &str = "/etc/modprobe.d/nectarlink-vcam.conf";
+const MODULES_LOAD_CONF: &str = "/etc/modules-load.d/tawam-vcam.conf";
+const MODPROBE_CONF: &str = "/etc/modprobe.d/tawam-vcam.conf";
 
 const V4L2_BUF_TYPE_VIDEO_OUTPUT: u32 = 2;
 const V4L2_PIX_FMT_YUYV: u32 = 0x5659_5559; // 'Y' 'U' 'Y' 'V'
