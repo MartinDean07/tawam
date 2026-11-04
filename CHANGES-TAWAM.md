@@ -45,3 +45,9 @@ The user interface was redesigned so Tawam no longer looks like NectarLink:
 - **Setup window:** no honeycomb backdrop or bee mascot.
 - **Names:** "Nectar Island" is now "Tawam Island".
 - **Linux .deb:** now depends on the Qt xcb libraries (`libxcb-cursor0`, `libxkbcommon-x11-0`, …), so it starts on a clean system.
+
+## 0.1.6: Arabic
+
+- **Arabic (العربية) added to both apps:** you can pick it in Settings → Language, or it follows the system language. Android shows a right-to-left layout. The desktop text is Arabic, but its layout is still left-to-right.
+- **How it was translated:** about 2,700 strings were machine-drafted, and every `%1$s` / `%1` placeholder was checked against the English source before building. Native-speaker review is welcome.
+- **Desktop fix:** the app now loads its translation files again. The rebrand had renamed the file prefix it looks for, so no translation loaded, not even German, Turkish or Chinese.

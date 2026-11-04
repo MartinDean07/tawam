@@ -176,7 +176,7 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
             }
             Column {
-                width: Math.max(200, parent.width - qr.width - 24)
+                width: Math.max(120, parent.width - qr.width - parent.spacing)
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: 14
                 Step { width: parent.width; number: 1; label: qsTr("Open Tawam on your phone") }
@@ -196,6 +196,8 @@ Item {
                         }
                     }
                     Txt {
+                        width: parent.width
+                        wrapMode: Text.WordWrap
                         role: "caption"
                         muted: true
                         text: qsTr("New code in %1:%2 · same Wi-Fi only")

@@ -324,7 +324,7 @@ bool install_translator(rust::Str dir, rust::Str language)
     // translation (`nectarlink_es_ES.qm` missing), or English, stays English.
     bool installed = false;
     auto *app = new QTranslator(QCoreApplication::instance());
-    if (app->load(locale, QStringLiteral("tawam"), QStringLiteral("_"), folder)) {
+    if (app->load(locale, QStringLiteral("nectarlink"), QStringLiteral("_"), folder)) {
         installed = QCoreApplication::installTranslator(app);
         appTranslator() = app;
     } else {

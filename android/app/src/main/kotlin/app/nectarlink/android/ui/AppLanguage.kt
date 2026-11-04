@@ -19,6 +19,7 @@ object AppLanguage {
         "de" to "Deutsch",
         "zh-CN" to "简体中文",
         "tr" to "Türkçe",
+        "ar" to "العربية",
     )
 
     /** Whether the phone lets the app pick its own language. */
@@ -51,6 +52,7 @@ object AppLanguage {
             lower == "de" || lower.startsWith("de-") -> "de"
             lower == "en" || lower.startsWith("en-") -> "en"
             lower == "tr" || lower.startsWith("tr-") -> "tr"
+            lower == "ar" || lower.startsWith("ar-") -> "ar"
             else -> ""
         }
     }
